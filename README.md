@@ -52,30 +52,29 @@ problems. Here's the short version:
    ```
    On GitHub, click **Compare & pull request**. A bot checks your sticker within a minute.
 
-> **The one rule:** only add or change files inside **your own folder**, `cards/<your-username>/`.
+> **Good to know:** keep your files inside **your own folder**, `cards/<your-username>/`. That's
+> how the bot knows which sticker is yours.
 
 ---
 
-## 🎨 What you can make
+## 🎨 Make it yours
 
-| | |
-|---|---|
-| ✂️ **6 shapes** | classic · polaroid · badge (your name curves around the ring!) · ticket · morphing blob · die-cut cutout |
-| ✨ **4 finishes** | matte · glossy · holographic foil · glitter |
-| 🧵 **9 patterns** | dots · grid · stripes · checker · hearts · stars · waves · rays · none |
-| 🔤 **Fonts** | 33 preset fonts (including Arabic) or any Google Font |
-| 🎨 **Colours** | any colour or gradient for the background, text, name and accent |
-| 🃏 **The back** | click a sticker to flip it: a short bio and up to 3 fun facts |
-| 🧪 **Custom CSS** | style your sticker any way you like. It only ever affects your own sticker |
+There's no right way to make a sticker. It's your own little piece of the wall, so make it
+look like **you**: your face, your cat, a doodle, a meme, your favourite programming language,
+your name in Arabic… anything.
 
-Every option is in the [`card.json` reference](CONTRIBUTING.md#-cardjson-reference).
+The template gives you a few things to play with, if you want them: shapes (a badge where your
+name curves around the ring, a polaroid, a ticket, a wobbly blob, a die-cut cutout…),
+holographic and glitter finishes, patterns, hundreds of fonts, any colours or gradients, and a
+back side for a short bio and fun facts.
 
-<details>
-<summary>🤫 Easter egg (spoiler)</summary>
+And when that's not enough, **write your own CSS** and design the whole thing from scratch:
+animations, effects, a totally new look. It only ever changes your own sticker, so go wild. ✨
 
-Type `git push` anywhere on the wall (not in a text box). 🎉
+Look at the stickers in `demo-cards/` for ideas, then make something nobody has seen before.
+Everything you can set is listed in the [`card.json` reference](CONTRIBUTING.md#-cardjson-reference).
 
-</details>
+🤫 *Psst… there's a secret hidden somewhere on the wall. Can you find it?*
 
 ---
 
@@ -99,7 +98,7 @@ demo-cards/              ← example stickers, for ideas
 card.schema.json         ← lets VS Code autocomplete card.json and spot mistakes
 assets/js/sticker.js     ← how a sticker is drawn (3D tilt, flip, shapes, finishes)
 assets/css/sticker.css   ← how a sticker looks
-assets/js/schema.js      ← the sticker rules (shared by the website and the bot)
+assets/js/schema.js      ← the sticker options (shared by the website and the bot)
 scripts/build.mjs        ← checks every sticker and builds the site
 ```
 

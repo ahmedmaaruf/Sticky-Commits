@@ -4,9 +4,9 @@ Welcome! You're about to make a real **pull request**: the same way people contr
 open-source projects every day. By the end you'll have used a fork, a clone, a branch, commits
 and a pull request, and your sticker will be on [the wall](https://stickycommits.vercel.app). 🎉
 
-> **The one rule:** everything you add goes in **your own folder**:
-> `cards/<your-github-username>/`, all **lowercase**.
-> A bot checks every pull request, and it will politely refuse changes to other people's folders. 🙂
+> **Good to know:** everything you add goes in **your own folder**,
+> `cards/<your-github-username>/`, all **lowercase**. That's how the bot that checks every
+> pull request knows which sticker is yours. 🙂 Inside your folder, anything goes!
 
 **Contents**
 [0. What you need](#0-what-you-need-) ·
