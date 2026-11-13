@@ -83,6 +83,13 @@
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
+/* The blinking text cursor only belongs where you can type. Without this, browsers with
+   "caret browsing" (F7) show it after clicking any text, like the big title. Stickers
+   inherit this too, through their shadow DOM. Zero specificity, so any input can still
+   choose its own caret colour. */
+:where(*) { caret-color: transparent; }
+:where(input, textarea, select, [contenteditable]:not([contenteditable='false'])) { caret-color: auto; }
+
 html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
