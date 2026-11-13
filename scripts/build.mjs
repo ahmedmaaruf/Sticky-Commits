@@ -4,7 +4,7 @@
 //  and checks that each sticker follows the rules.
 //
 //    node scripts/build.mjs                 → writes ./cards.json
-//    node scripts/build.mjs --out _site     → full site in _site/ (used by GitHub Pages)
+//    node scripts/build.mjs --out _site     → full site in _site/ (what Vercel deploys)
 //    node scripts/build.mjs --check         → validate only (used on pull requests)
 //         [--author <github-login>] [--base <git-sha>]
 //
@@ -248,14 +248,16 @@ function readCard(sourceDir, folder, demo) {
     }
   }
 
-  // when was it first added? (git history, falls back to file time)
+  // when was it first added? (git history; outside git, falls back to the file's time)
   let added = '';
   if (inGitRepoCached()) added = git('log', '--diff-filter=A', '--follow', '--format=%aI', '--', `${rel}/card.json`).split('\n').at(-1) || '';
-  if (!added) {
+  // In a partial (shallow) clone a missing date just means "older than the history we have" —
+  // leave it empty rather than stamping today's date on it.
+  if (!added && !isShallowClone) {
     const st = fs.statSync(jsonPath);
     added = (st.birthtimeMs ? st.birthtime : st.mtime).toISOString();
   }
-  card.added = added;
+  if (added) card.added = added;
 
   for (const k of Object.keys(card)) if (card[k] === undefined) delete card[k];
   result.card = card;
@@ -263,7 +265,18 @@ function readCard(sourceDir, folder, demo) {
 }
 
 let gitCache;
-const inGitRepoCached = () => (gitCache ??= inGitRepo());
+let isShallowClone = false;
+const inGitRepoCached = () => {
+  if (gitCache !== undefined) return gitCache;
+  gitCache = inGitRepo();
+  // Hosting services like Vercel clone only the latest few commits. Fetch the rest so
+  // every sticker gets its real "added" date (NEW! badge, newest-in-the-middle order).
+  if (gitCache && git('rev-parse', '--is-shallow-repository') === 'true') {
+    git('fetch', '--unshallow', '--quiet');
+    isShallowClone = git('rev-parse', '--is-shallow-repository') === 'true';
+  }
+  return gitCache;
+};
 
 // ── collect everything ─────────────────────────────────────────
 export function collectCards() {
@@ -439,7 +452,6 @@ function cli() {
       if (fs.existsSync(src)) fs.cpSync(src, path.join(out, f), { recursive: true });
     }
     fs.writeFileSync(path.join(out, 'cards.json'), JSON.stringify(manifest));
-    fs.writeFileSync(path.join(out, '.nojekyll'), '');
     console.log(`📦 Built site → ${path.relative(ROOT, out) || '.'}/ with ${manifest.count} stickers`);
   } else {
     fs.writeFileSync(path.join(ROOT, 'cards.json'), JSON.stringify(manifest, null, 2));

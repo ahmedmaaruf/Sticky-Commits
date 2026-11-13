@@ -25,7 +25,7 @@ Classmates can tilt, flip and ❤️ each other's stickers. Likes are anonymous:
 | 💬 **Moderated comments** | Anyone can comment on a sticker (and optionally sign their name). Comments stay hidden until you approve them on `moderate.html`. |
 | ✍️ **Made by hand** | Students write their own `card.json`. VS Code autocompletes every option and flags mistakes thanks to `card.schema.json`. |
 | 🤖 **PR bot** | A GitHub Action checks every pull request with beginner-friendly messages ("trailing comma on line 8", "did you mean *finish*?", "you can only edit your own folder"). |
-| 🚀 **Auto deploy** | Merged stickers go live on GitHub Pages within a minute. |
+| 🚀 **Auto deploy** | Hosted on Vercel: merged stickers go live within a minute, and every pull request gets its own preview link. |
 | 🌙 **Polish** | Light/dark mode, search, "Surprise me", share links, mobile-friendly, keyboard accessible, respects reduced motion. |
 
 <details>
@@ -52,11 +52,19 @@ git remote add origin https://github.com/<you>/<repo>.git
 git push -u origin main
 ```
 
-### 2. Turn on GitHub Pages
+### 2. Deploy it on Vercel
 
-Repo → **Settings → Pages → Build and deployment → Source: _GitHub Actions_**.
-The **🚀 Deploy the wall** workflow then publishes the site at `https://<you>.github.io/<repo>/`
-on every push to `main` (re-run it from the **Actions** tab the first time if needed).
+1. Sign in at [vercel.com](https://vercel.com) with your GitHub account → **Add New… → Project**.
+2. **Import** the repo. The build settings come from [`vercel.json`](vercel.json) automatically
+   (build command `npm run build`, output folder `_site`, no framework) — just click **Deploy**.
+3. You get a link like `https://<your-project>.vercel.app`. Share it with the class!
+
+From then on, every merge to `main` redeploys the wall in about a minute.
+
+**Previews for every sticker 👀** — each pull request also gets its own preview link, so you and the
+student can see the sticker live on the real wall *before* merging. Because students open pull
+requests from their forks, Vercel asks you to approve each preview first (one click on the link it
+posts in the PR) — a nice extra safety check.
 
 ### 3. Personalise `config.js`
 
@@ -108,7 +116,7 @@ Comments only appear after a moderator approves them. To become one (once):
    **Allow new users to sign up**. (Even without this, nobody else can moderate — only accounts in
    `public.admins` can — but there's no reason to let strangers create accounts.)
 
-**Approving comments:** open `https://<you>.github.io/<repo>/moderate.html` (it isn't linked from
+**Approving comments:** open `https://<your-project>.vercel.app/moderate.html` (it isn't linked from
 the site on purpose — bookmark it) and sign in. You'll see every waiting comment with the
 sticker it's on, the text and who signed it, and buttons to **✅ Approve**, **🚫 Reject** or **🗑 Delete**.
 Approved comments appear on the wall instantly. The browser tab shows how many are waiting, e.g.
@@ -205,10 +213,11 @@ assets/js/positions.js       ← where moderators placed each sticker
 assets/js/home.js            ← the home page
 assets/js/wall.js            ← the wall: layout, search, likes, comments panel, easter egg
 assets/js/moderate.js        ← the moderation page
-scripts/build.mjs            ← validates cards → cards.json; --check for PRs; --out for Pages
+scripts/build.mjs            ← validates cards → cards.json; --check for PRs; --out builds the site
 scripts/serve.mjs            ← tiny dev server
 supabase/setup.sql           ← likes, comments, contest window + wall layout (safe to re-run)
-.github/workflows/           ← deploy + PR checks
+vercel.json                  ← Vercel build settings (npm run build → _site/)
+.github/workflows/           ← the PR checker bot
 ```
 
 `scripts/build.mjs` scans every `cards/*/card.json`, validates it with the rules in `schema.js`,
