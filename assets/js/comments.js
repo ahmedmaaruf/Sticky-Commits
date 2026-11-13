@@ -8,7 +8,7 @@
 //  • local mode  → stored in this browser only, so you can try the whole
 //                  comment → approve flow before Supabase is set up.
 // ═══════════════════════════════════════════════════════════════
-import { store, voterId, supabase } from './supabase.js';
+import { store, supabase } from './supabase.js';
 import { createAdmin } from './admin.js';
 
 export const COMMENT_MAX = 280;
@@ -21,8 +21,11 @@ const localAll = () => store.get(LOCAL_KEY, []);
 const localSave = (list) => store.set(LOCAL_KEY, list);
 const clean = (s, max) => String(s ?? '').replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, ' ').trim().slice(0, max);
 
-/** Public side: read approved comments, send new (pending) ones. */
-export function createComments(config = {}) {
+/**
+ * Public side: read approved comments, send new (pending) ones.
+ * `access` is the code keeper from access.js — sending needs a code.
+ */
+export function createComments(config = {}, access = null) {
   const db = supabase(config);
 
   const backend = db ? {
@@ -32,7 +35,16 @@ export function createComments(config = {}) {
       return Object.fromEntries(rows.map((r) => [r.card_id, Number(r.total) || 0]));
     },
     list: (card) => db.rpc('card_comments', { p_card: card }),
-    send: (card, body, author) => db.rpc('add_comment', { p_card: card, p_body: body, p_author: author || null, p_voter: voterId() }),
+    async send(card, body, author) {
+      const code = access?.code();
+      if (!code) throw Object.assign(new Error('Enter your code to comment'), { needCode: true });
+      const id = await db.rpc('add_comment', { p_card: card, p_body: body, p_author: author || null, p_code: code });
+      if (id == null) {
+        access.forget();
+        throw Object.assign(new Error('That code doesn’t work anymore'), { badCode: true });
+      }
+      return id;
+    },
   } : {
     mode: 'local',
     async counts() {

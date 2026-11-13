@@ -1827,3 +1827,102 @@ body.arranging .slot[data-pinned]::after { opacity: .45; border-style: solid; }
   .arrange-hint { display: none; }
   .arrange-btn { padding: .5em .8em; }
 }
+
+/* ── 🎟️ the access-code screen (assets/js/access.js) ───────────── */
+html.gated { overflow: hidden; }
+html.gated body > :not(.gate):not(.sky) { visibility: hidden; }
+.gate {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 20px;
+  border: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(55vw 45vw at 0% 0%, rgb(255 111 174 / .22), transparent 62%),
+    radial-gradient(50vw 45vw at 100% 0%, rgb(169 139 255 / .26), transparent 62%),
+    radial-gradient(60vw 50vw at 50% 105%, rgb(79 209 168 / .18), transparent 60%),
+    var(--page);
+  overflow: auto;
+}
+.gate[open] { display: grid; place-items: center; }
+.gate::backdrop { background: var(--page); }
+.gate.modal { background: transparent; }
+.gate.modal::backdrop { background: rgb(20 12 40 / .55); backdrop-filter: blur(6px); }
+.gate.modal .gate-floaties { display: none; }
+.gate-floaties .emoji-sticker { position: absolute; animation: gate-bob 6s ease-in-out infinite; }
+.gate-floaties .emoji-sticker:nth-child(2n) { animation-duration: 8s; animation-delay: -2s; }
+
+.gate-card {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 36px 26px 24px;
+  border-radius: 30px;
+  background: var(--surface);
+  text-align: center;
+  box-shadow: 0 0 0 5px var(--outline), 0 12px 0 5px var(--outline-d), 0 40px 80px -20px rgb(0 0 0 / .45);
+  animation: gate-in .6s cubic-bezier(.3, 1.45, .5, 1) both;
+}
+.gate-tape {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 112px;
+  height: 28px;
+  translate: -50% 0;
+  rotate: -3deg;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--pink) 72%, transparent);
+  box-shadow: 0 2px 6px rgb(0 0 0 / .12);
+}
+.gate-icon { font-size: 3.2rem; line-height: 1; }
+.gate-title { margin: 10px 0 4px; font: 700 1.9rem/1.1 var(--font-display); }
+.gate-sub { margin: 0 0 20px; color: var(--muted); font-weight: 700; }
+.gate-digits { display: flex; justify-content: center; gap: clamp(5px, 1.6vw, 9px); }
+.gate-digits input {
+  width: clamp(38px, 11vw, 50px);
+  height: clamp(50px, 14vw, 62px);
+  padding: 0;
+  border: 3px solid var(--outline-d);
+  border-radius: 14px;
+  background: var(--page);
+  color: var(--ink);
+  font: 700 clamp(1.5rem, 6vw, 1.9rem)/1 var(--font-display);
+  text-align: center;
+  caret-color: var(--pink);
+  transition: border-color .15s, box-shadow .15s, translate .15s;
+}
+.gate-digits input:focus {
+  outline: none;
+  border-color: var(--lilac);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--lilac) 28%, transparent);
+  translate: 0 -2px;
+}
+.gate-msg { min-height: 1.4em; margin: 12px 0 6px; font-weight: 800; color: var(--pink-d); }
+.gate-go { width: 100%; }
+.gate-later {
+  margin-top: 12px;
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 800 .95rem var(--font-body);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.gate-note { margin: 14px 0 0; font-size: .85rem; font-weight: 700; color: var(--muted); }
+.gate.shake .gate-card { animation: gate-shake .45s ease; }
+.gate.done { opacity: 0; transition: opacity .45s ease .2s; pointer-events: none; }
+.gate.done .gate-card { scale: 1.06; transition: scale .3s cubic-bezier(.3, 1.45, .5, 1); }
+@keyframes gate-in { from { opacity: 0; transform: translateY(30px) scale(.9) rotate(-3deg); } }
+@keyframes gate-shake { 20%, 60% { translate: -10px 0; } 40%, 80% { translate: 10px 0; } }
+@keyframes gate-bob { 50% { translate: 0 -14px; rotate: 6deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .gate-card, .gate.shake .gate-card, .gate-floaties .emoji-sticker { animation: none; }
+}
+@media (max-width: 480px) {
+  .gate-floaties { display: none; }
+  .gate-card { padding: 32px 18px 20px; }
+}

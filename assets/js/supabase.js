@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-//  Tiny Supabase client (no dependencies) + the anonymous browser id.
-//  Used by likes, comments and the moderation page.
+//  Tiny Supabase client (no dependencies) + a safe localStorage helper.
+//  Used by likes, comments, access codes and the moderation page.
 // ═══════════════════════════════════════════════════════════════
 
 export const store = {
@@ -8,25 +8,12 @@ export const store = {
     try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
   },
   set(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* private mode */ }
+    try {
+      if (value == null) localStorage.removeItem(key);
+      else localStorage.setItem(key, JSON.stringify(value));
+    } catch { /* private mode */ }
   },
 };
-
-function randomId() {
-  if (crypto.randomUUID) return crypto.randomUUID();
-  const b = crypto.getRandomValues(new Uint8Array(16));
-  b[6] = (b[6] & 0x0f) | 0x40;
-  b[8] = (b[8] & 0x3f) | 0x80;
-  const hex = [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-}
-
-/** A random id for this browser. It never contains anything about the person. */
-export function voterId() {
-  let id = store.get('sw:voter', null);
-  if (!id) { id = randomId(); store.set('sw:voter', id); }
-  return id;
-}
 
 /** Returns null when Supabase isn't configured (→ local preview mode). */
 export function supabase(config = {}) {

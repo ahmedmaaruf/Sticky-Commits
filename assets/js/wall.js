@@ -2,6 +2,7 @@
 //  wall.html — the full-screen, explorable sticker board
 // ═══════════════════════════════════════════════════════════════
 import { stickerReady } from './sticker.js';
+import { createAccess } from './access.js';
 import { createLikes } from './likes.js';
 import { createComments, COMMENT_MAX } from './comments.js';
 import { createAdmin } from './admin.js';
@@ -13,8 +14,9 @@ import { contestInfo, shortLeft, fmtDate, rankCards } from './contest.js';
 import { burst, confetti } from './fx.js';
 import { config, $, $$, hashNum, applySiteText, initTheme, toast } from './common.js';
 
-const likes = createLikes(config);
-const comments = createComments(config);
+const access = createAccess(config);
+const likes = createLikes(config, access);
+const comments = createComments(config, access);
 const tally = createTally(likes);
 const admin = createAdmin(config);
 const positions = createPositions(admin);
@@ -55,6 +57,7 @@ const slotOf = (id) => document.getElementById(`sticker-${id}`);
 applySiteText();
 document.title = `The wall · ${config.title || 'Sticky Commits'}`;
 initTheme($('#theme-toggle'));
+await access.gate(); // 🎟️ the 6-digit code (only asked once per device)
 wireToolbar();
 wireCanvasControls();
 wireComments();
@@ -77,6 +80,7 @@ try {
   state.positions = placed;
   renderBoard();
   if (new URLSearchParams(location.search).has('arrange') && admin.signedIn()) setArranging(true);
+  await syncMyLikes();
   await refreshCounts();
   openFromHash();
 } catch (err) {
@@ -89,6 +93,31 @@ if (likes.mode === 'shared') {
 }
 
 // ── data ───────────────────────────────────────────────────────
+/** Which stickers this code already liked (on any device), so the hearts are right. */
+async function syncMyLikes() {
+  try {
+    await likes.syncMine();
+  } catch (err) {
+    console.warn(err);
+  }
+}
+
+/** Make sure we have a working code before liking / commenting. */
+async function haveCode() {
+  if (likes.mode !== 'shared' || access.has()) return true;
+  if (!(await access.ask())) return false;
+  await syncMyLikes();
+  for (const card of state.cards) paintLike(card, false);
+  return true;
+}
+
+/** The database didn't accept our code (removed or mistyped): ask for it again. */
+function codeStopped() {
+  refreshCounts(); // its likes may be gone too
+  toast('That code doesn’t work anymore — please enter your code again 🎟️', 3600);
+  setTimeout(() => haveCode(), 600);
+}
+
 async function refreshCounts() {
   const [l, c] = await Promise.allSettled([tally.refresh(), comments.counts()]);
   if (c.status === 'fulfilled') state.talkCounts = c.value;
@@ -484,6 +513,7 @@ function wireComments() {
     if (!card) return;
     if ($('#talk-website').value) { talk.close(); return; } // a bot filled the hidden field
     const send = $('#talk-send');
+    if (!(await haveCode())) return;
     send.disabled = true;
     status.className = 'talk-status';
     status.textContent = 'Sending…';
@@ -500,6 +530,7 @@ function wireComments() {
     } catch (err) {
       status.className = 'talk-status bad';
       status.textContent = err.message || 'Couldn’t send that — try again in a moment.';
+      if (err.badCode || err.needCode) codeStopped();
     } finally {
       setTimeout(() => { send.disabled = false; }, 1500);
     }
@@ -589,6 +620,7 @@ async function toggleLike(card, btn) {
   }
   if (btn.dataset.busy) return;
   btn.dataset.busy = '1';
+  if (!(await haveCode())) { delete btn.dataset.busy; return; }
   const wasLiked = likes.isLiked(card.id);
   const prev = tally.raw(card.id);
 
@@ -608,8 +640,9 @@ async function toggleLike(card, btn) {
   } catch (err) {
     console.warn(err);
     tally.set(card.id, prev);
-    if (/closed|opened/i.test(err.message)) toast(`🏁 ${err.message}`, 3200);
-    else if (/slow down|isn.t on the wall/i.test(err.message)) toast(`🐢 ${err.message[0].toUpperCase()}${err.message.slice(1)}`, 3600);
+    if (err.badCode || err.needCode) codeStopped();
+    else if (/closed|opened/i.test(err.message)) toast(`🏁 ${err.message}`, 3200);
+    else if (/slow down|too many|isn.t on the wall/i.test(err.message)) toast(`🐢 ${err.message[0].toUpperCase()}${err.message.slice(1)}`, 3600);
     else toast('Couldn’t save that like — check your connection 💔');
   } finally {
     delete btn.dataset.busy;

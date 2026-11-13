@@ -31,6 +31,8 @@ and a pull request, and your sticker will be on [the wall](https://stickycommits
 - **[Git](https://git-scm.com/downloads)** installed. Check with `git --version`.
 - **[Node.js](https://nodejs.org) 18 or newer**, to preview your sticker. Check with `node --version`.
 - **[VS Code](https://code.visualstudio.com)** (recommended). It autocompletes every sticker option for you.
+- 🎟️ **Your 6-digit code** from the paper you got in class. It opens the website and lets you like
+  and comment. You only type it once on each device.
 
 Can't install anything? Skip to [the no-install way](#-the-no-install-way-github-website-only).
 

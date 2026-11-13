@@ -3,13 +3,15 @@
 //  the race podium and the "how to join" guide.
 // ═══════════════════════════════════════════════════════════════
 import { stickerReady } from './sticker.js';
+import { createAccess } from './access.js';
 import { createLikes } from './likes.js';
 import { loadCards, createTally } from './data.js';
 import { contestInfo, rankCards, timeLeft, fmtDate, shortLeft } from './contest.js';
 import { confetti } from './fx.js';
 import { config, $, applySiteText, initTheme, initParallax, initStickyHeader, puffTitle, toast } from './common.js';
 
-const likes = createLikes(config);
+const access = createAccess(config);
+const likes = createLikes(config, access);
 const tally = createTally(likes);
 let cards = [];
 let podiumKey = '';
@@ -31,8 +33,9 @@ const contest = () => contestInfo(config, now());
 // ── boot ───────────────────────────────────────────────────────
 const { title } = applySiteText();
 document.title = title;
-puffTitle($('#title'), title);
 initTheme($('#theme-toggle'));
+await access.gate(); // 🎟️ the 6-digit code (only asked once per device)
+puffTitle($('#title'), title);
 initParallax($('#floaties'));
 initStickyHeader($('#topbar'));
 setupContest();

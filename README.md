@@ -8,6 +8,9 @@ Once your pull request is merged, your sticker slaps onto the wall for everyone 
 
 ### 👉 [See the wall](https://stickycommits.vercel.app) · 📖 [Step-by-step guide](CONTRIBUTING.md)
 
+🎟️ The website opens with the **6-digit code** on the little paper you got in class. Type it once,
+and that phone or computer remembers it. No account, no name, nothing else.
+
 ---
 
 ## 🏆 The contest
@@ -15,7 +18,7 @@ Once your pull request is merged, your sticker slaps onto the wall for everyone 
 The sticker with the **most likes** wins **a one-month Claude subscription**.
 
 - 🗓️ Voting is open from **November 13** until **December 13, 2026** (23:59, UTC+3).
-- ❤️ One like per person on each sticker. You can like as many stickers as you want.
+- ❤️ Your code gives you one like on each sticker, on any device. Like as many stickers as you want!
 - 🤝 In a tie, the sticker that reached its total first wins.
 - 🧩 Every merged sticker enters automatically. (The demo stickers don't count.)
 
