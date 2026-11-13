@@ -7,17 +7,21 @@
 //    node scripts/build.mjs --out _site     → full site in _site/ (what Vercel deploys)
 //    node scripts/build.mjs --check         → validate only (used on pull requests)
 //         [--author <github-login>] [--base <git-sha>]
+//    node scripts/build.mjs --sync          → tell Supabase which stickers exist
+//         (needs the STICKER_SYNC_KEY environment variable; used by a GitHub Action)
 //
 //  No dependencies — just Node 18+.
 // ═══════════════════════════════════════════════════════════════
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   SHAPES, FINISHES, PATTERNS, ATTACH, IMAGE_FITS, IMAGE_EXTS, LIMITS, USERNAME_RE,
   KNOWN_KEYS, COLOR_KEYS, FONTS, CUSTOM_FONT_RE, isCssValueSafe,
 } from '../assets/js/schema.js';
+import { supabase } from '../assets/js/supabase.js';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES = [
@@ -76,6 +80,55 @@ function jsonErrorHint(text, err) {
   return `card.json is not valid JSON${where}.${hints.length ? ` Hint: ${hints.join('; ')}.` : ''}`;
 }
 
+// ── custom CSS: pictures only from the sticker's own folder ────
+// Loading files from other websites would let someone track everybody who
+// opens the wall, so sticker CSS may only use files from its own folder
+// (or data: URIs). Relative url()s are rewritten to point at that folder.
+const CSS_URL_RE = /url\(\s*(?:"([^"]*)"|'([^']*)'|([^)\s]*))\s*\)/gi;
+const CSS_FILE_EXTS = [...IMAGE_EXTS, '.woff', '.woff2', '.ttf', '.otf'];
+
+/** Decode CSS escapes (\41 → "A", \/ → "/") so tricks can't hide a web address. */
+const cssUnescape = (s) => s
+  .replace(/\\([0-9a-f]{1,6})[ \t\n\r\f]?/gi, (_, hex) => {
+    const n = parseInt(hex, 16);
+    return n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : '�';
+  })
+  .replace(/\\([^\n])/g, '$1');
+
+function checkCss(css, rel, abs, err, warn) {
+  const noComments = css.replace(/\/\*[\s\S]*?(?:\*\/|$)/g, ' ');
+  if (/@import/i.test(cssUnescape(noComments))) warn('@import is not supported in sticker CSS and will be ignored.');
+
+  let bad = false;
+  const out = noComments.replace(CSS_URL_RE, (whole, dq, sq, bare) => {
+    // browsers ignore tabs and line breaks inside addresses, so we do too
+    const value = cssUnescape(dq ?? sq ?? bare ?? '').replace(/[\t\n\r\f]/g, '').trim();
+    if (/^data:/i.test(value)) return whole;
+    const file = value.split(/[?#]/)[0];
+    if (!file || /^[a-z][a-z0-9+.-]*:/i.test(file) || /^[/\\]/.test(file) || file.includes('..')) {
+      bad = true;
+      return whole;
+    }
+    const dir = path.join(abs, path.dirname(file));
+    if (!fs.existsSync(dir) || !fs.readdirSync(dir).includes(path.basename(file))) {
+      err(`Custom CSS uses "${file}", but it isn't in ${rel}/ (file names are case-sensitive).`);
+    } else if (!CSS_FILE_EXTS.includes(path.extname(file).toLowerCase())) {
+      err(`Custom CSS can only use pictures or fonts — "${file}" isn't one.`);
+    }
+    return `url("${rel}/${file.split('/').map(encodeURIComponent).join('/')}")`;
+  });
+
+  // Whatever is left must not reach another website — this also catches
+  // image-set("…"), escaped characters and other sneaky spellings.
+  const scan = cssUnescape(out.replace(CSS_URL_RE, (whole, dq, sq, bare) => (
+    /^data:/i.test(cssUnescape(dq ?? sq ?? bare ?? '').trim()) ? 'url()' : whole)))
+    .replace(/[\t\n\r\f]/g, '');
+  if (bad || /\/\/|https?:/i.test(scan)) {
+    err(`Custom CSS can't load files from other websites. Put the picture in ${rel}/ and use it like: url("my-picture.png").`);
+  }
+  return out;
+}
+
 // ── validate one sticker folder ────────────────────────────────
 function readCard(sourceDir, folder, demo) {
   const rel = `${sourceDir}/${folder}`;
@@ -130,7 +183,9 @@ function readCard(sourceDir, folder, demo) {
     return v;
   };
 
-  const card = { id: folder.toLowerCase(), demo };
+  // Demo ids get a prefix so a student whose username matches a demo folder
+  // (e.g. "noor") never collides with it.
+  const card = { id: demo ? `demo-${folder.toLowerCase()}` : folder.toLowerCase(), demo };
   card.name = text_('name', LIMITS.name, true);
   card.title = text_('title', LIMITS.title);
   card.about = text_('about', LIMITS.about);
@@ -217,7 +272,7 @@ function readCard(sourceDir, folder, demo) {
     } else {
       const imgAbs = path.join(abs, raw.image);
       const ext = path.extname(raw.image).toLowerCase();
-      // Check the exact spelling: Mac/Windows ignore upper/lower case, but GitHub Pages doesn't.
+      // Check the exact spelling: Mac/Windows ignore upper/lower case, but the live website doesn't.
       const exact = fs.existsSync(path.dirname(imgAbs)) && fs.readdirSync(path.dirname(imgAbs)).includes(path.basename(imgAbs));
       if (!IMAGE_EXTS.includes(ext)) err(`"${raw.image}" — images must be one of: ${IMAGE_EXTS.join(' ')}.`);
       else if (!exact) {
@@ -243,8 +298,7 @@ function readCard(sourceDir, folder, demo) {
     else {
       const css = fs.readFileSync(cssPath, 'utf8');
       if (css.length > LIMITS.cssBytes) err(`"${raw.css}" is ${kb(css.length)} — keep custom CSS under ${kb(LIMITS.cssBytes)}.`);
-      if (/@import/i.test(css)) warn('@import is not supported in sticker CSS and will be ignored.');
-      card.css = css;
+      card.css = checkCss(css, rel, abs, err, warn);
     }
   }
 
@@ -342,6 +396,32 @@ function writeSummary(md) {
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${md}\n`);
 }
 
+// ── tell the database which stickers exist (GitHub Action) ─────
+/** Reads window.STICKER_WALL from config.js without a browser. */
+function readSiteConfig() {
+  const sandbox = { window: {} };
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'config.js'), 'utf8'), sandbox, { filename: 'config.js' });
+  return sandbox.window.STICKER_WALL || {};
+}
+
+async function syncStickers() {
+  const db = supabase(readSiteConfig());
+  if (!db) {
+    console.log('ℹ️  Supabase isn\'t set up in config.js yet — nothing to sync.');
+    return;
+  }
+  const key = (process.env.STICKER_SYNC_KEY || '').trim();
+  if (!key) {
+    console.log('ℹ️  No STICKER_SYNC_KEY secret yet — skipping. (Add it under Settings → Secrets and variables → Actions.)');
+    return;
+  }
+  const { manifest } = buildManifest();
+  const ids = manifest.cards.map((c) => c.id);
+  const total = await db.rpc('sync_stickers', { p_key: key, p_ids: ids });
+  console.log(`🔄 Synced ${ids.length} sticker(s) — the database now knows ${total}.`);
+  writeSummary(`## 🔄 Sticker list synced\n\n${ids.length} sticker(s) can now be liked and commented on.`);
+}
+
 // ── JSON Schema (editor autocomplete for card.json) ────────────
 export function cardJsonSchema() {
   const str = (max, description) => ({ type: 'string', maxLength: max, description });
@@ -394,6 +474,14 @@ function cli() {
   const args = process.argv.slice(2);
   const flag = (name) => args.includes(name);
   const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
+
+  if (flag('--sync')) {
+    syncStickers().catch((e) => {
+      console.error(`💥 Couldn't sync the sticker list: ${e.message}`);
+      process.exit(1);
+    });
+    return;
+  }
 
   if (flag('--schema')) {
     fs.writeFileSync(path.join(ROOT, 'card.schema.json'), `${JSON.stringify(cardJsonSchema(), null, 2)}\n`);

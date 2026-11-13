@@ -14,7 +14,7 @@ window.STICKER_WALL = {
   // Who the wall is for (shown as a little chip and in the footer).
   className: 'Informatics students',
 
-  // "owner/repo" on GitHub. Leave empty to auto-detect when hosted on GitHub Pages.
+  // "owner/repo" on GitHub — used for the GitHub links on the site.
   repo: 'ahmedmaaruf/Sticky-Commits',
   branch: 'main',
 
@@ -25,7 +25,7 @@ window.STICKER_WALL = {
   newBadgeDays: 4,
 
   // 🏆 The contest. Likes only count between `start` and `end`
-  // (also set the same `end` in Supabase — see README → "Contest dates").
+  // (also set the same dates in Supabase — see "CONTEST DATES" in supabase/setup.sql).
   // Times include the time zone (+03:00), so everyone sees the same deadline.
   contest: {
     enabled: true,
@@ -35,10 +35,10 @@ window.STICKER_WALL = {
     prizeDetail: 'A one-month Claude subscription for the maker of the most-loved sticker.',
   },
 
-  // Shared, anonymous likes (see README → "Turn on shared likes").
+  // Shared, anonymous likes & comments (Supabase → Project Settings → API).
   // Until this is filled in, likes are only saved in each visitor's own browser.
   supabase: {
-    url: '',      // e.g. 'https://abcdefghijkl.supabase.co'
-    anonKey: '',  // the "anon" / "publishable" key — it's safe to commit
+    url: 'https://weihvbmqxvrhnrgzopep.supabase.co',
+    anonKey: 'sb_publishable_8dd14G_vPj7Sv7djxnWYJQ_THzI_mdA', // the "publishable" key — it's safe to commit
   },
 };

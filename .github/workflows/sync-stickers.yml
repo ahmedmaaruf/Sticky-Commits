@@ -1,0 +1,34 @@
+# After every merge to main, tells the database which stickers are on the
+# wall, so likes and comments only work for real stickers.
+# Needs the STICKER_SYNC_KEY repository secret (Settings → Secrets and
+# variables → Actions). Without it, this just skips.
+name: 🔄 Sync sticker list
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-stickers
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Send the sticker list to Supabase
+        env:
+          STICKER_SYNC_KEY: ${{ secrets.STICKER_SYNC_KEY }}
+        run: node scripts/build.mjs --sync

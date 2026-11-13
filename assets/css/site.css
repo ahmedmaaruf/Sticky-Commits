@@ -761,6 +761,13 @@ html.exploring { overflow: hidden; }
   100% { opacity: 1; transform: none; }
 }
 .slot:hover, .slot:focus-within { z-index: 20; }
+/* A sticker's custom CSS can only paint (and catch clicks) close to its own
+   spot, so no sticker can cover the wall. The clip sits on elements outside the
+   sticker's shadow DOM, where custom CSS can't reach to undo it. The margins
+   leave room for shadows, tape, the hover lift and the ❤️ / 💬 buttons. */
+.slot { clip-path: inset(-100px -70px -110px); }
+.place { clip-path: inset(-70px -40px -80px); }
+.leader-sticker, .talk-sticker { clip-path: inset(-30px); }
 .slot.jump sticker-card { animation: jump .8s cubic-bezier(.3, 1.6, .5, 1); }
 @keyframes jump {
   0%, 100% { translate: 0 0; }

@@ -18,13 +18,9 @@ export function hashNum(str, mod) {
   return Math.abs(h) % mod;
 }
 
-/** "owner/repo" from config, or guessed from a *.github.io address. */
+/** "owner/repo" from config.js. */
 export function repoSlug() {
-  if (config.repo) return config.repo.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$|\/$/g, '');
-  const m = location.hostname.match(/^([\w-]+)\.github\.io$/i);
-  if (!m) return '';
-  const first = location.pathname.split('/').filter(Boolean)[0];
-  return first && !first.includes('.') ? `${m[1]}/${first}` : `${m[1]}/${m[1]}.github.io`;
+  return (config.repo || '').replace(/^https?:\/\/github\.com\//, '').replace(/\.git$|\/$/g, '');
 }
 
 export function applySiteText() {

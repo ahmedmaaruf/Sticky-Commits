@@ -58,7 +58,7 @@ if (likes.mode === 'shared') {
 } else {
   const pill = $('#mode-pill');
   pill.hidden = false;
-  pill.textContent = '💾 Likes and comments are in preview mode (saved in this browser only) — see README to make them shared.';
+  pill.textContent = '💾 Likes and comments are in preview mode (saved in this browser only).';
 }
 
 function refreshAll() {

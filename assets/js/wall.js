@@ -608,7 +608,9 @@ async function toggleLike(card, btn) {
   } catch (err) {
     console.warn(err);
     tally.set(card.id, prev);
-    toast(/closed|opened/i.test(err.message) ? `🏁 ${err.message}` : 'Couldn’t save that like — check your connection 💔');
+    if (/closed|opened/i.test(err.message)) toast(`🏁 ${err.message}`, 3200);
+    else if (/slow down|isn.t on the wall/i.test(err.message)) toast(`🐢 ${err.message[0].toUpperCase()}${err.message.slice(1)}`, 3600);
+    else toast('Couldn’t save that like — check your connection 💔');
   } finally {
     delete btn.dataset.busy;
     paintLike(card, false);
