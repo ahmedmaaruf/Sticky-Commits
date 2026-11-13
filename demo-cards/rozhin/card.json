@@ -1,0 +1,16 @@
+{
+  "name": "Rozhin",
+  "title": "sunshine in human form ☀️",
+  "image": "photo.jpg",
+  "imagePosition": "50% 28%",
+  "emoji": "🌸",
+  "shape": "polaroid",
+  "finish": "holo",
+  "pattern": "hearts",
+  "font": "Pacifico",
+  "colors": { "background": "#ffe3ee", "text": "#4a2338", "accent": "#ff7aa8" },
+  "attach": "tape",
+  "tilt": 3,
+  "about": "Smiles first, debugs later. Collects autumn leaves, cosy jackets and GitHub stars. Her code is as warm as her smile 🍂",
+  "facts": ["🍂 Autumn is her season", "🧥 Cosy jacket collector", "😊 Smiles at merge conflicts"]
+}

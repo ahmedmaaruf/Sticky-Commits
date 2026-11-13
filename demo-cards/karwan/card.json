@@ -1,0 +1,16 @@
+{
+  "name": "Karwan",
+  "title": "“one more cigarette, then I'll push” 🚬",
+  "image": "photo.jpg",
+  "imagePosition": "50% 40%",
+  "emoji": "🚬",
+  "shape": "classic",
+  "finish": "matte",
+  "pattern": "grid",
+  "font": "Permanent Marker",
+  "colors": { "background": "linear-gradient(160deg, #2f6f73, #1b3c40)", "text": "#f3efe6", "accent": "#d7263d" },
+  "attach": "pin",
+  "tilt": -4,
+  "about": "Runs on smoke breaks and late-night commits. Has quit smoking 47 times, and git log can prove it.",
+  "facts": ["🚬 A pack a day, a commit a day", "☕ Coffee is fuel number two", "🌙 Pushes code at 3 AM"]
+}
