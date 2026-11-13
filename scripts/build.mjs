@@ -184,7 +184,7 @@ function readCard(sourceDir, folder, demo) {
   };
 
   // Demo ids get a prefix so a student whose username matches a demo folder
-  // (e.g. "noor") never collides with it.
+  // (e.g. "robo-rina") never collides with it.
   const card = { id: demo ? `demo-${folder.toLowerCase()}` : folder.toLowerCase(), demo };
   card.name = text_('name', LIMITS.name, true);
   card.title = text_('title', LIMITS.title);
