@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.svg" alt="Sticky Commits logo" width="140"></p>
+
 # ✨ Sticky Commits — the Informatics sticker wall
 
 A cute, 3D sticker wall where **every sticker is a pull request**.

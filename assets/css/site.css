@@ -242,8 +242,8 @@ code, kbd {
   box-shadow: 0 10px 30px -18px rgb(var(--shadow-rgb) / .45);
 }
 .topbar.scrolled .nav { padding-top: 9px; padding-bottom: 9px; }
-.topbar .brand-mark { transition: rotate .5s cubic-bezier(.3, 1.6, .5, 1), width .3s, height .3s; }
-.topbar.scrolled .brand-mark { width: 34px; height: 34px; }
+.topbar .brand-mark { transition: rotate .5s cubic-bezier(.3, 1.6, .5, 1), scale .5s cubic-bezier(.3, 1.6, .5, 1), width .3s, height .3s; }
+.topbar.scrolled .brand-mark { width: 38px; height: 38px; }
 .topbar.scrolled .icon-btn { width: 38px; height: 38px; }
 .brand {
   display: inline-flex;
@@ -252,20 +252,16 @@ code, kbd {
   font: 700 1.25rem var(--font-display);
   text-decoration: none;
 }
+/* the logo (assets/logo.svg) — a happy sticker whose face is a little commit graph */
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--pink);
-  color: #fff;
-  font-size: 1.3rem;
-  rotate: -8deg;
-  box-shadow: 0 0 0 3px #fff, 0 4px 0 3px var(--outline-d), 0 10px 18px -4px rgb(var(--shadow-rgb) / .35);
-  transition: rotate .5s cubic-bezier(.3, 1.6, .5, 1);
+  display: block;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(0 6px 8px rgb(var(--shadow-rgb) / .22));
+  transition: rotate .5s cubic-bezier(.3, 1.6, .5, 1), scale .5s cubic-bezier(.3, 1.6, .5, 1);
 }
-.brand:hover .brand-mark { rotate: 8deg; }
+.brand:hover .brand-mark { rotate: 12deg; scale: 1.08; }
 .nav-links { display: flex; align-items: center; gap: clamp(6px, 2vw, 22px); }
 .nav-links a { font-weight: 800; text-decoration: none; opacity: .8; white-space: nowrap; }
 .brand > span:last-child { white-space: nowrap; }
@@ -1029,7 +1025,7 @@ html.exploring { overflow: hidden; }
   .nav-links a.hide-sm { display: none; }
   .nav { gap: 10px; }
   .brand { font-size: 1.05rem; }
-  .brand-mark { width: 34px; height: 34px; font-size: 1.1rem; }
+  .brand-mark { width: 38px; height: 38px; }
   .toolbar-wrap { position: relative; top: 0; padding: 0; margin-bottom: 14px; }
   .toolbar { flex-wrap: nowrap; width: 100%; border-radius: 999px; }
   .search { flex: 1 1 auto; min-width: 0; }
@@ -1343,7 +1339,7 @@ html.exploring .toast { bottom: 76px; }
   box-shadow: 0 10px 24px -12px rgb(var(--shadow-rgb) / .45);
   font-size: 1.05rem;
 }
-.wall-brand .brand-mark { width: 34px; height: 34px; font-size: 1.1rem; }
+.wall-brand .brand-mark { width: 38px; height: 38px; }
 .wall-bar .toolbar { flex-wrap: nowrap; }
 .wall-right { display: flex; align-items: center; gap: 10px; }
 .contest-chip {

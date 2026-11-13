@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Sticky Commits">
+  <title>Sticky Commits</title>
+  <defs>
+    <linearGradient id="sc-body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7ab5"/>
+      <stop offset=".55" stop-color="#e57cdc"/>
+      <stop offset="1" stop-color="#a98bff"/>
+    </linearGradient>
+    <linearGradient id="sc-flap" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eadff6"/>
+    </linearGradient>
+    <!-- everything except the peeled-off corner -->
+    <clipPath id="sc-peel">
+      <polygon points="0,0 128,0 128,62 62,128 0,128"/>
+    </clipPath>
+  </defs>
+
+  <g transform="rotate(-8 64 64)">
+    <g clip-path="url(#sc-peel)">
+      <!-- thickness under the sticker -->
+      <rect x="13" y="18" width="102" height="102" rx="27" fill="#d6c6ec"/>
+      <!-- white die-cut edge -->
+      <rect x="13" y="13" width="102" height="102" rx="27" fill="#ffffff"/>
+      <!-- the sticker -->
+      <rect x="20" y="20" width="88" height="88" rx="21" fill="url(#sc-body)"/>
+      <!-- shine -->
+      <path d="M31 47 C 32 36, 37 31, 48 30" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
+    </g>
+
+    <!-- blushing cheeks -->
+    <ellipse cx="38" cy="73" rx="7.5" ry="4.5" fill="#ff3f8a" fill-opacity=".38"/>
+    <ellipse cx="90" cy="73" rx="7.5" ry="4.5" fill="#ff3f8a" fill-opacity=".38"/>
+
+    <!-- eyes = two commits -->
+    <ellipse cx="48" cy="60" rx="6.5" ry="8" fill="#2b1d3f"/>
+    <ellipse cx="80" cy="60" rx="6.5" ry="8" fill="#2b1d3f"/>
+    <circle cx="45.6" cy="56.6" r="2.4" fill="#ffffff"/>
+    <circle cx="77.6" cy="56.6" r="2.4" fill="#ffffff"/>
+
+    <!-- smile = a branch between two commits -->
+    <path d="M52 77 C 57 87, 71 87, 76 77" fill="none" stroke="#2b1d3f" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="52" cy="77" r="4" fill="#ffd166" stroke="#2b1d3f" stroke-width="2.5"/>
+    <circle cx="76" cy="77" r="4" fill="#ffd166" stroke="#2b1d3f" stroke-width="2.5"/>
+
+    <!-- the peeling corner -->
+    <path d="M73 115 C 78 104, 83 96, 90 92 C 95 85, 103 80, 115 73 Z" fill="#2b1d3f" fill-opacity=".14" transform="translate(-3 -3)"/>
+    <path d="M73 115 C 78 104, 83 96, 90 92 C 95 85, 103 80, 115 73 Z" fill="url(#sc-flap)" stroke="#d6c6ec" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- tape -->
+    <rect x="40" y="4" width="46" height="15" rx="2" fill="#ffd166" fill-opacity=".78" transform="rotate(-16 63 12)"/>
+  </g>
+
+  <!-- sparkle -->
+  <path d="M112 9 C 113 15, 114 16, 120 17 C 114 18, 113 19, 112 25 C 111 19, 110 18, 104 17 C 110 16, 111 15, 112 9 Z" fill="#ffd166" stroke="#e3a92b" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>
