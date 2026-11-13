@@ -408,7 +408,7 @@ create policy "admins arrange the wall" on public.card_positions
 --  Run this once (and again if the dates change).
 -- ════════════════════════════════════════════════════════════════
 -- update public.contest
--- set starts_at = '2026-11-12 00:00:00+03', ends_at = '2026-12-12 23:59:59+03';
+-- set starts_at = '2026-11-13 00:00:00+03', ends_at = '2026-12-13 23:59:59+03';
 --
 -- Final standings (ties: whoever reached their total first wins):
 -- select * from public.like_counts() order by total desc, last_at asc;

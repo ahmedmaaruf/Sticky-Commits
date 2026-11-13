@@ -29,8 +29,8 @@ window.STICKER_WALL = {
   // Times include the time zone (+03:00), so everyone sees the same deadline.
   contest: {
     enabled: true,
-    start: '2026-11-12T00:00:00+03:00',
-    end: '2026-12-12T23:59:59+03:00',
+    start: '2026-11-13T00:00:00+03:00',
+    end: '2026-12-13T23:59:59+03:00',
     prize: '1 month of Claude',
     prizeDetail: 'A one-month Claude subscription for the maker of the most-loved sticker.',
   },

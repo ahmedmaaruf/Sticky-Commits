@@ -14,7 +14,7 @@ Once your pull request is merged, your sticker slaps onto the wall for everyone 
 
 The sticker with the **most likes** wins **a one-month Claude subscription**.
 
-- 🗓️ Voting is open from **November 12** until **December 12, 2026** (23:59, UTC+3).
+- 🗓️ Voting is open from **November 13** until **December 13, 2026** (23:59, UTC+3).
 - ❤️ One like per person on each sticker. You can like as many stickers as you want.
 - 🤝 In a tie, the sticker that reached its total first wins.
 - 🧩 Every merged sticker enters automatically. (The demo stickers don't count.)
