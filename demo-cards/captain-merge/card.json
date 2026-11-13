@@ -1,0 +1,15 @@
+{
+  "name": "Captain Merge",
+  "title": "resolver of conflicts",
+  "image": "rocket.svg",
+  "emoji": "🚀",
+  "shape": "polaroid",
+  "finish": "matte",
+  "pattern": "none",
+  "font": "Caveat",
+  "colors": { "background": "#2d2466", "text": "#2b1d3f", "accent": "#a98bff" },
+  "attach": "tape",
+  "tilt": -5,
+  "about": "<<<<<<< HEAD — I have seen things. I have merged things. I always pull before I push.",
+  "facts": ["🌌 git rebase -i survivor", "🧭 Navigates by commit graph", "🛰️ Never force-pushes"]
+}

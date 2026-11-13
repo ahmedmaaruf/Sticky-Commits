@@ -1,0 +1,14 @@
+{
+  "name": "Cactus Carl",
+  "title": "low maintenance, high uptime",
+  "image": "cactus.svg",
+  "emoji": "🌵",
+  "shape": "cutout",
+  "finish": "glossy",
+  "pattern": "none",
+  "font": "Chewy",
+  "colors": { "background": "#e7ffef", "text": "#1d4a33", "accent": "#4fd1a8" },
+  "attach": "none",
+  "about": "Needs water once a month and a code review once a week. A little prickly about tabs vs spaces.",
+  "facts": ["🌵 Spaces, obviously", "💧 Hydrated & documented", "🌸 Blooms on release day"]
+}

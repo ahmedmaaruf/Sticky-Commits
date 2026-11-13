@@ -1,0 +1,14 @@
+{
+  "name": "Robo Rina",
+  "title": "beep boop · ships on fridays",
+  "image": "robot.svg",
+  "emoji": "🤖",
+  "shape": "badge",
+  "finish": "glossy",
+  "pattern": "stripes",
+  "font": "Righteous",
+  "colors": { "background": "#dcfff2", "text": "#173b33", "accent": "#2fb98d" },
+  "attach": "pin",
+  "about": "Fully automated, partially caffeinated. I run your tests at 3am so you do not have to.",
+  "facts": ["⚡ 100% uptime (citation needed)", "🧪 Green tests only", "🔋 Charges via compliments"]
+}

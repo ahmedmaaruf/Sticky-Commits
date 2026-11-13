@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sticky Commits sticker",
+  "description": "Your sticker for the class wall. Generated from assets/js/schema.js — run `npm run schema` after changing the rules.",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "The big name on your sticker.",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "A short tagline under your name."
+    },
+    "github": {
+      "type": "string",
+      "description": "Your GitHub username (defaults to your folder name).",
+      "pattern": "^@?[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$"
+    },
+    "image": {
+      "type": "string",
+      "description": "A picture file in your folder (e.g. \"photo.png\"), a https:// link, or \"none\" for emoji-only. Leave it out to use your GitHub avatar."
+    },
+    "imageFit": {
+      "enum": [
+        "cover",
+        "contain"
+      ],
+      "description": "\"cover\" fills the frame, \"contain\" shows the whole picture."
+    },
+    "imagePosition": {
+      "type": "string",
+      "description": "Which part of the picture to focus on.",
+      "examples": [
+        "center",
+        "top",
+        "bottom",
+        "50% 20%"
+      ]
+    },
+    "emoji": {
+      "type": "string",
+      "maxLength": 16,
+      "description": "A little emoji badge (or your whole picture when image is \"none\")."
+    },
+    "shape": {
+      "enum": [
+        "classic",
+        "polaroid",
+        "badge",
+        "ticket",
+        "blob",
+        "cutout"
+      ],
+      "description": "classic: Rounded sticker with a photo window\npolaroid: Instant photo with a handwritten caption\nbadge: Round badge — your name curves around the edge\nticket: Admit-one ticket with punched notches\nblob: Wobbly jelly blob that slowly morphs\ncutout: Die-cut around your picture (best with transparent PNGs)"
+    },
+    "finish": {
+      "enum": [
+        "matte",
+        "glossy",
+        "holo",
+        "glitter"
+      ],
+      "description": "matte: Soft paper, no shine\nglossy: Shiny, catches the light\nholo: Rainbow holographic foil\nglitter: Sparkly glitter that twinkles"
+    },
+    "pattern": {
+      "enum": [
+        "none",
+        "dots",
+        "grid",
+        "stripes",
+        "checker",
+        "hearts",
+        "stars",
+        "waves",
+        "rays"
+      ],
+      "description": "A background pattern."
+    },
+    "font": {
+      "description": "One of the preset fonts, or any Google Fonts name.",
+      "anyOf": [
+        {
+          "enum": [
+            "Fredoka",
+            "Chewy",
+            "Bagel Fat One",
+            "Sniglet",
+            "Mochiy Pop One",
+            "Baloo 2",
+            "Comfortaa",
+            "Caveat",
+            "Pacifico",
+            "Permanent Marker",
+            "Gloria Hallelujah",
+            "Indie Flower",
+            "Gaegu",
+            "Press Start 2P",
+            "Silkscreen",
+            "Bungee",
+            "Monoton",
+            "Righteous",
+            "Orbitron",
+            "Shrikhand",
+            "Lobster",
+            "Abril Fatface",
+            "Rubik Mono One",
+            "Archivo Black",
+            "Space Mono",
+            "JetBrains Mono",
+            "Lalezar",
+            "Marhey",
+            "Baloo Bhaijaan 2",
+            "Cairo",
+            "Tajawal",
+            "Reem Kufi",
+            "Rakkas"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9 ]{2,40}$"
+        }
+      ]
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Any CSS colours — background can also be a gradient.",
+      "properties": {
+        "background": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[^;{}<>\\\\]*$",
+          "description": "Background colour or gradient, e.g. \"#ffd6ec\" or \"linear-gradient(160deg, #ffb17a, #ff6fae)\"."
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[^;{}<>\\\\]*$",
+          "description": "Text colour."
+        },
+        "accent": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[^;{}<>\\\\]*$",
+          "description": "Accent colour: badge ring, labels, pin and tape."
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[^;{}<>\\\\]*$",
+          "description": "A different colour just for your name (optional)."
+        }
+      }
+    },
+    "attach": {
+      "enum": [
+        "tape",
+        "pin",
+        "none"
+      ],
+      "description": "How your sticker is stuck to the wall."
+    },
+    "tilt": {
+      "type": "number",
+      "minimum": -12,
+      "maximum": 12,
+      "description": "Rotation in degrees. Leave it out for a random tilt."
+    },
+    "about": {
+      "type": "string",
+      "maxLength": 220,
+      "description": "Text on the back of your sticker."
+    },
+    "facts": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "maxLength": 50,
+        "description": "A fun fact."
+      },
+      "description": "Up to 3 fun facts for the back."
+    },
+    "css": {
+      "type": "string",
+      "pattern": "^[^/]+\\.css$",
+      "description": "Your own CSS file in your folder, e.g. \"style.css\"."
+    }
+  }
+}

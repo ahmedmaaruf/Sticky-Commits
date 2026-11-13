@@ -1,0 +1,16 @@
+{
+  "name": "sticky-commits",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A 3D sticker wall for Informatics students — every sticker is a pull request.",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs --out _site",
+    "check": "node scripts/build.mjs --check",
+    "schema": "node scripts/build.mjs --schema"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

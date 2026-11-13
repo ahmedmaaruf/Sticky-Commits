@@ -1,0 +1,27 @@
+# Checks every pull request: is the card.json valid, is the picture
+# small enough, and did the student only touch their own folder?
+name: 🧩 Check sticker
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate stickers
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: node scripts/build.mjs --check --author "$AUTHOR" --base "$BASE_SHA"

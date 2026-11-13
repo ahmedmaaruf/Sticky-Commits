@@ -1,0 +1,681 @@
+/* ═══════════════════════════════════════════════════════════════
+   <sticker-card> — styles inside every sticker's shadow DOM.
+   Everything is sized in `em`, and 1em = card width / 15,
+   so a sticker scales perfectly to any size.
+   ═══════════════════════════════════════════════════════════════ */
+
+:host {
+  --w: 240px;
+  --bg: #ffd6ec;
+  --ink: #3b1f4a;
+  --accent: #ff5fa2;
+  --label-ink: #fff;
+  --on-paper: #2b1d3f;
+  --name-color: var(--ink);
+  --edge: #fff;
+  --font: 'Fredoka', ui-rounded, sans-serif;
+  --tape: var(--accent);
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --shadow-rgb: 70 30 110;
+
+  display: inline-block;
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 3 / 4;
+  font-size: calc(var(--w) / 15);
+  font-family: 'Nunito', ui-rounded, system-ui, sans-serif;
+  line-height: 1.25;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── 3D rig ─────────────────────────────────────────────────── */
+.scene { position: absolute; inset: 0; perspective: 55em; }
+
+.tilt {
+  --lift: 0em;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotate(var(--tilt, 0deg)) translateZ(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform .7s cubic-bezier(.2, .9, .25, 1.3);
+}
+:host([data-hover]) .tilt { --lift: 2.4em; transition: transform .14s ease-out; }
+:host(:focus-visible) .tilt { --lift: 1.6em; }
+
+.flipper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform .9s cubic-bezier(.3, 1.45, .45, 1);
+}
+:host([flipped]) .flipper { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Swap which face exists at the halfway point of the flip. Hover effects
+     (shine, peel, emoji wiggle) get their own GPU layers, and browsers don't
+     apply backface-visibility to those — so the hidden face could bleed
+     through. Making it truly invisible fixes that for good. */
+  transition: visibility 0s linear .16s;
+}
+.face * { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.back { transform: rotateY(180deg); visibility: hidden; }
+:host([flipped]) .front { visibility: hidden; }
+:host([flipped]) .back { visibility: visible; }
+
+/* Soft, layered shadow that grows as the sticker lifts off the board */
+.wrap {
+  position: absolute;
+  inset: 0;
+  filter:
+    drop-shadow(0 .08em .08em rgb(var(--shadow-rgb) / .22))
+    drop-shadow(0 .5em .9em rgb(var(--shadow-rgb) / .16));
+  transition: filter .5s ease;
+}
+:host([data-hover]) .wrap {
+  filter:
+    drop-shadow(0 .1em .12em rgb(var(--shadow-rgb) / .18))
+    drop-shadow(0 1.9em 2.2em rgb(var(--shadow-rgb) / .3));
+}
+:host(:focus-visible) .wrap {
+  filter:
+    drop-shadow(0 0 .18em var(--accent))
+    drop-shadow(0 0 .18em var(--accent))
+    drop-shadow(0 1.4em 1.8em rgb(var(--shadow-rgb) / .28));
+}
+
+/* ── Sticker base ───────────────────────────────────────────── */
+.sticker {
+  position: absolute;
+  inset: 0;
+  padding: .5em;
+  border-radius: 1.4em;
+  background: var(--edge);
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.surface {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: .75em;
+  border-radius: 1em;
+  background: var(--pattern, none), var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* Patterns — tinted with the text colour so they suit any palette */
+[class*="pat-"] { --pc: color-mix(in srgb, var(--ink) 13%, transparent); }
+.pat-dots    { --pattern: radial-gradient(circle, var(--pc) 0 .14em, transparent .16em) 0 0 / 1.1em 1.1em; }
+.pat-grid    { --pattern: linear-gradient(var(--pc) .07em, transparent .07em) -.04em -.04em / 1.2em 1.2em, linear-gradient(90deg, var(--pc) .07em, transparent .07em) -.04em -.04em / 1.2em 1.2em; }
+.pat-stripes { --pattern: repeating-linear-gradient(-45deg, var(--pc) 0 .4em, transparent .4em 1em); }
+.pat-checker { --pattern: conic-gradient(var(--pc) 25%, transparent 0 50%, var(--pc) 0 75%, transparent 0) 0 0 / 1.8em 1.8em; }
+.pat-waves   { --pattern: radial-gradient(circle at 50% 0, transparent .45em, var(--pc) .5em .7em, transparent .75em) 0 0 / 1.4em .9em; }
+.pat-rays    { --pattern: repeating-conic-gradient(from 0deg at 50% 32%, var(--pc) 0 7deg, transparent 7deg 15deg); }
+.pat-hearts {
+  --pattern:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-opacity='.55' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 5 6.5 5c2 0 3.4 1.1 4.2 2.3l1.3 1.6 1.3-1.6C14.1 6.1 15.5 5 17.5 5 21 5 23.1 8.4 21.6 11.8 19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E") 0 0 / 1.6em 1.6em,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-opacity='.35' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 5 6.5 5c2 0 3.4 1.1 4.2 2.3l1.3 1.6 1.3-1.6C14.1 6.1 15.5 5 17.5 5 21 5 23.1 8.4 21.6 11.8 19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E") .8em .8em / 1.6em 1.6em;
+}
+.pat-stars {
+  --pattern:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-opacity='.6' d='M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z'/%3E%3C/svg%3E") 0 0 / 1.5em 1.5em,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-opacity='.35' d='M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z'/%3E%3C/svg%3E") .75em .75em / 1.5em 1.5em;
+}
+
+/* ── Shared bits ────────────────────────────────────────────── */
+.photo {
+  position: relative;
+  flex: none;
+  height: 11.4em;
+  border-radius: .8em;
+  overflow: hidden;
+  background: var(--pattern, none), color-mix(in srgb, var(--accent) 30%, #fff);
+  box-shadow: 0 0 0 .2em rgb(255 255 255 / .9), 0 .3em .7em rgb(0 0 0 / .14);
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--fit, cover);
+  object-position: var(--focus, center);
+  -webkit-user-drag: none;
+}
+.big-emoji {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 5.6em;
+  line-height: 1;
+  filter: drop-shadow(0 .06em .04em rgb(0 0 0 / .18));
+}
+
+.emoji-bubble {
+  position: absolute;
+  z-index: 2;
+  top: 10.4em;
+  right: .4em;
+  width: 2.7em;
+  height: 2.7em;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1em;
+  line-height: 1;
+  rotate: 12deg;
+  box-shadow: 0 .25em .5em rgb(0 0 0 / .18), inset 0 -.2em 0 rgb(0 0 0 / .06);
+  transition: rotate .5s cubic-bezier(.3, 1.6, .5, 1), scale .5s cubic-bezier(.3, 1.6, .5, 1);
+}
+.emoji-bubble span { font-size: 1.5em; }
+:host([data-hover]) .emoji-bubble { rotate: -8deg; scale: 1.15; }
+
+.name {
+  margin: .5em 0 0;
+  font-family: var(--font);
+  font-size: 1.55em;
+  font-weight: 700;
+  font-synthesis: none;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--name-color);
+  text-shadow: 0 .06em 0 color-mix(in srgb, var(--accent) 45%, transparent);
+  padding: 0 .1em .05em;
+}
+.title {
+  margin: .3em 0 0;
+  font-size: .78em;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  opacity: .85;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* Little pill labels used by blob + cutout */
+.label {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 1.85em;
+  translate: -50% 0;
+  rotate: -3deg;
+  max-width: 13.4em;
+  margin: 0;
+  padding: .28em .8em .32em;
+  border-radius: 99em;
+  background: var(--accent);
+  color: var(--label-ink);
+  font-family: var(--font);
+  font-size: 1.3em;
+  font-weight: 700;
+  font-synthesis: none;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 0 0 .16em #fff, 0 .3em .5em rgb(0 0 0 / .18);
+}
+.sub {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: .15em;
+  translate: -50% 0;
+  rotate: 2deg;
+  max-width: 13.6em;
+  margin: 0;
+  padding: .3em .8em;
+  border-radius: .7em;
+  background: #fff;
+  color: #2b1d3f;
+  font-size: .72em;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+  box-shadow: 0 .25em .45em rgb(0 0 0 / .12);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Shape: classic ─────────────────────────────────────────── */
+.front.s-classic .sticker,
+.front.s-ticket .sticker,
+.front.s-polaroid .sticker {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2em), calc(100% - 2em) 100%, 0 100%);
+  transition: clip-path .45s cubic-bezier(.3, 1.4, .5, 1);
+}
+:host([data-hover]) .front.s-classic .sticker,
+:host([data-hover]) .front.s-ticket .sticker,
+:host([data-hover]) .front.s-polaroid .sticker {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3.4em), calc(100% - 3.4em) 100%, 0 100%);
+}
+
+/* The peeling corner — the folded-over back of the sticker */
+.peel {
+  display: none;
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 0;
+  width: 2em;
+  height: 2em;
+  background: linear-gradient(to top left, transparent 49.5%, #ece6f3 50%, #fff 70%, #d9d1e4 100%);
+  border-top-left-radius: .5em;
+  filter: drop-shadow(-.12em -.12em .14em rgb(var(--shadow-rgb) / .22));
+  transition: width .45s cubic-bezier(.3, 1.4, .5, 1), height .45s cubic-bezier(.3, 1.4, .5, 1);
+  pointer-events: none;
+}
+.s-classic .peel, .s-ticket .peel, .s-polaroid .peel { display: block; }
+:host([data-hover]) .peel { width: 3.4em; height: 3.4em; }
+
+/* ── Shape: polaroid ────────────────────────────────────────── */
+.s-polaroid .sticker {
+  --edge: #fffdf8;
+  border-radius: .35em;
+  padding: .75em .75em 0;
+  background:
+    radial-gradient(120% 80% at 20% 0%, #fff 0%, transparent 60%),
+    linear-gradient(#fffdf8, #f6f1e9);
+}
+.s-polaroid .photo {
+  height: 13.5em;
+  border-radius: .15em;
+  background: var(--pattern, none), var(--bg);
+  box-shadow: inset 0 0 0 .06em rgb(0 0 0 / .12), inset 0 .2em .6em rgb(0 0 0 / .14);
+}
+.s-polaroid .photo img { box-shadow: inset 0 0 1em rgb(0 0 0 / .2); }
+.s-polaroid .name {
+  margin-top: .3em;
+  font-size: 1.7em;
+  color: var(--on-paper);
+  text-shadow: none;
+  rotate: -1.5deg;
+}
+.s-polaroid .title { color: var(--on-paper); opacity: .72; margin-top: .1em; }
+.s-polaroid .emoji-bubble { top: 12em; right: .2em; }
+
+/* ── Shape: badge ───────────────────────────────────────────── */
+.s-badge .sticker {
+  inset: 1.4em 0 auto 0;
+  width: 15em;
+  height: 15em;
+  border-radius: 50%;
+  padding: .45em;
+}
+.ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--pattern, none), var(--accent);
+  box-shadow: inset 0 -.3em .4em rgb(0 0 0 / .14), inset 0 .25em .3em rgb(255 255 255 / .35);
+}
+.ring svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ring text {
+  fill: var(--label-ink);
+  font-family: var(--font);
+  font-weight: 700;
+  font-synthesis: none;
+  letter-spacing: .06em;
+}
+.ring .ring-sub { font-family: 'Nunito', ui-rounded, sans-serif; font-weight: 800; letter-spacing: .12em; opacity: .9; }
+.s-badge .photo {
+  position: absolute;
+  inset: 2.2em;
+  height: auto;
+  border-radius: 50%;
+  background: var(--pattern, none), var(--bg);
+  box-shadow: 0 0 0 .22em #fff, 0 .25em .6em rgb(0 0 0 / .25);
+}
+.s-badge .big-emoji { font-size: 4.6em; }
+.s-badge .emoji-bubble { top: 1.3em; right: .4em; }
+.badge-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: .2em;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1.15em;
+  color: var(--on-paper);
+}
+
+/* ── Shape: ticket ──────────────────────────────────────────── */
+.s-ticket .sticker {
+  border-radius: .9em;
+  -webkit-mask:
+    radial-gradient(circle 1em at 0 13.3em, transparent 96%, #000 100%),
+    radial-gradient(circle 1em at 100% 13.3em, transparent 96%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle 1em at 0 13.3em, transparent 96%, #000 100%),
+    radial-gradient(circle 1em at 100% 13.3em, transparent 96%, #000 100%);
+  mask-composite: intersect;
+}
+.s-ticket .surface { border-radius: .55em; }
+.s-ticket .photo { height: 11.2em; border-radius: .5em; }
+.perf {
+  position: absolute;
+  left: .9em;
+  right: .9em;
+  top: 12.8em;
+  border-top: .16em dashed color-mix(in srgb, var(--ink) 35%, transparent);
+}
+.s-ticket .name { margin-top: 1.05em; }
+.s-ticket .emoji-bubble { top: 10.2em; }
+.stub {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5em;
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: .56em;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+.barcode {
+  width: 5.5em;
+  height: 1.6em;
+  background: repeating-linear-gradient(90deg,
+    currentColor 0 .12em, transparent .12em .3em, currentColor .3em .36em,
+    transparent .36em .5em, currentColor .5em .7em, transparent .7em .82em);
+}
+
+/* ── Shape: blob ────────────────────────────────────────────── */
+.s-blob .sticker {
+  inset: .2em .5em 4.6em;
+  padding: .5em;
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  overflow: visible;
+  background: var(--edge);
+  animation: morph 11s ease-in-out infinite alternate;
+}
+.s-blob .surface { padding: 0; border-radius: inherit; }
+.s-blob .photo { height: 100%; border-radius: inherit; box-shadow: none; }
+.s-blob .fx { border-radius: inherit; overflow: hidden; }
+.s-blob .emoji-bubble { top: .4em; right: .1em; }
+@keyframes morph {
+  0%   { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
+  33%  { border-radius: 63% 37% 45% 55% / 55% 62% 38% 45%; }
+  66%  { border-radius: 38% 62% 56% 44% / 62% 38% 62% 38%; }
+  100% { border-radius: 55% 45% 37% 63% / 46% 55% 45% 54%; }
+}
+
+/* ── Shape: cutout ──────────────────────────────────────────── */
+.s-cutout .sticker { background: none; padding: 0; border-radius: 0; overflow: visible; }
+.art {
+  position: absolute;
+  inset: .7em .7em 4.8em;
+  display: grid;
+  place-items: center;
+}
+.art img, .art .big-emoji {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  /* white die-cut outline that follows the picture's shape */
+  filter:
+    drop-shadow(.16em 0 0 var(--edge)) drop-shadow(-.16em 0 0 var(--edge))
+    drop-shadow(0 .16em 0 var(--edge)) drop-shadow(0 -.16em 0 var(--edge));
+}
+.art .big-emoji { font-size: 8em; width: auto; height: auto; }
+.s-cutout .fx {
+  inset: .7em .7em 4.8em;
+  border-radius: 0;
+  -webkit-mask: var(--img) center / contain no-repeat;
+  mask: var(--img) center / contain no-repeat;
+}
+
+/* ── Finishes ───────────────────────────────────────────────── */
+.fx {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.glare {
+  background: radial-gradient(farthest-corner circle at var(--mx) var(--my),
+    rgb(255 255 255 / .7) 0%, rgb(255 255 255 / .15) 28%, transparent 60%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity .4s;
+}
+:host([data-hover]) .glare { opacity: 1; }
+
+.f-matte .glare { opacity: 0 !important; }
+
+.f-glossy .glare { mix-blend-mode: overlay; opacity: .35; }
+:host([data-hover]) .f-glossy .glare { opacity: 1; }
+.f-glossy .foil {
+  background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / .55) 45%, rgb(255 255 255 / .1) 52%, transparent 60%)
+    calc(100% - var(--mx)) 0 / 260% 100% no-repeat;
+  mix-blend-mode: soft-light;
+}
+
+.f-holo .foil {
+  background:
+    repeating-linear-gradient(115deg,
+      hsl(330 100% 72%) 0%, hsl(40 100% 66%) 6%, hsl(140 80% 64%) 12%,
+      hsl(195 100% 66%) 18%, hsl(265 100% 74%) 24%, hsl(330 100% 72%) 30%)
+      var(--mx) var(--my) / 280% 280%,
+    repeating-linear-gradient(55deg, rgb(255 255 255 / .0) 0 .5em, rgb(255 255 255 / .35) .6em .7em, rgb(255 255 255 / .0) .8em 1.3em)
+      calc(var(--mx) * -1) 0 / 200% 200%;
+  mix-blend-mode: color-dodge;
+  opacity: .32;
+  transition: opacity .4s;
+}
+:host([data-hover]) .f-holo .foil { opacity: .62; }
+.f-holo .glare { mix-blend-mode: overlay; }
+
+.f-glitter .foil {
+  background: linear-gradient(115deg, #ff9ad5, #ffe68a, #9af5d4, #9cd2ff, #d7a8ff, #ff9ad5) var(--mx) var(--my) / 300% 300%;
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 14 -10.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+      var(--mx) var(--my) / 7em 7em;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 14 -10.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+      var(--mx) var(--my) / 7em 7em;
+  mix-blend-mode: hard-light;
+  opacity: .75;
+  animation: twinkle 2.4s ease-in-out infinite alternate;
+}
+.f-glitter .glare { mix-blend-mode: overlay; }
+@keyframes twinkle { from { filter: brightness(1); } to { filter: brightness(1.6) saturate(1.3); } }
+/* cutouts already use the mask for their silhouette — glitter there is just a sparkle sweep */
+.s-cutout.f-glitter .foil { -webkit-mask: var(--img) center / contain no-repeat; mask: var(--img) center / contain no-repeat; opacity: .35; mix-blend-mode: color-dodge; }
+
+/* ── Tape & pin ─────────────────────────────────────────────── */
+.attach { position: absolute; z-index: 6; pointer-events: none; left: 50%; }
+.tape {
+  top: -.85em;
+  width: 6.4em;
+  height: 1.9em;
+  translate: -50% 0;
+  rotate: var(--tape-rot, -4deg);
+  background:
+    linear-gradient(rgb(255 255 255 / .35), rgb(255 255 255 / 0) 60%),
+    repeating-linear-gradient(45deg,
+      color-mix(in srgb, var(--tape) 80%, #fff) 0 .38em,
+      color-mix(in srgb, var(--tape) 55%, #fff) .38em .76em);
+  opacity: .88;
+  mix-blend-mode: multiply;
+  clip-path: polygon(
+    0 0, 4% 10%, 0 20%, 4% 30%, 0 40%, 4% 50%, 0 60%, 4% 70%, 0 80%, 4% 90%, 0 100%,
+    100% 100%, 96% 90%, 100% 80%, 96% 70%, 100% 60%, 96% 50%, 100% 40%, 96% 30%, 100% 20%, 96% 10%, 100% 0);
+}
+.pin {
+  top: .1em;
+  width: 1.75em;
+  height: 1.75em;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%,
+    #fff 0 .14em,
+    color-mix(in srgb, var(--accent) 55%, #fff) .3em,
+    var(--accent) .7em,
+    color-mix(in srgb, var(--accent) 55%, #000) 100%);
+  box-shadow: .3em .45em .35em rgb(0 0 0 / .32), inset -.1em -.15em .2em rgb(0 0 0 / .2);
+}
+.pin::after { /* the needle's shadow on the card */
+  content: '';
+  position: absolute;
+  left: 60%;
+  top: 80%;
+  width: .25em;
+  height: .9em;
+  border-radius: 1em;
+  background: rgb(0 0 0 / .18);
+  rotate: -35deg;
+  filter: blur(.06em);
+  z-index: -1;
+}
+/* badges get taped / pinned on the upper-left so the curved name stays readable */
+.s-badge .tape  { top: 3em; left: 1.9em; rotate: -45deg; width: 4.6em; }
+.s-badge .pin   { top: 8em; left: 1.15em; }
+.s-blob .tape, .s-cutout .tape { top: -.4em; }
+.s-blob .pin,  .s-cutout .pin  { top: .3em; }
+
+/* ── Back side ──────────────────────────────────────────────── */
+.back .sticker { padding: .5em; border-radius: 1.4em; background: var(--edge); }
+.back .surface { padding: .8em; }
+.card-back {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .65em;
+  padding: .95em .9em .8em;
+  border-radius: .75em;
+  background: rgb(255 255 255 / .9);
+  color: #2b1d3f;
+  box-shadow: 0 .3em .8em rgb(0 0 0 / .1);
+  overflow: hidden;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.who { display: flex; align-items: center; gap: .6em; min-width: 0; }
+.avatar {
+  flex: none;
+  width: 3.1em;
+  height: 3.1em;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  box-shadow: 0 0 0 .18em #fff, 0 0 0 .32em var(--accent);
+  font-size: 1em;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar span { font-size: 1.7em; }
+.who-text { min-width: 0; }
+.back-name {
+  margin: 0;
+  font-family: var(--font);
+  font-weight: 700;
+  font-synthesis: none;
+  font-size: 1.15em;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.handle {
+  display: inline-block;
+  margin-top: .15em;
+  font-size: .7em;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--accent) 70%, #2b1d3f);
+  text-decoration: none;
+}
+.handle:hover { text-decoration: underline; }
+.about {
+  margin: 0;
+  font-size: .76em;
+  line-height: 1.45;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.about.empty { opacity: .5; font-style: italic; }
+.facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .35em; }
+.facts li {
+  padding: .32em .65em;
+  border-radius: .6em;
+  background: color-mix(in srgb, var(--accent) 16%, #fff);
+  font-size: .68em;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.facts li:nth-child(2) { rotate: -1deg; }
+.facts li:nth-child(3) { rotate: .8deg; }
+.back-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5em;
+  font-size: .62em;
+  font-weight: 800;
+  color: #7b6d93;
+}
+.share {
+  all: unset;
+  cursor: pointer;
+  padding: .35em .7em;
+  border-radius: 99em;
+  background: var(--accent);
+  color: var(--label-ink);
+  font-weight: 800;
+  box-shadow: 0 .2em 0 color-mix(in srgb, var(--accent) 60%, #000);
+  transition: translate .1s, box-shadow .1s;
+}
+.share:hover { filter: brightness(1.06); }
+.share:active { translate: 0 .15em; box-shadow: 0 .05em 0 color-mix(in srgb, var(--accent) 60%, #000); }
+.share:focus-visible { outline: .15em solid #2b1d3f; outline-offset: .15em; }
+.flip-hint { position: absolute; right: .8em; top: .7em; font-size: .7em; opacity: .45; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt, .flipper { transition-duration: .01s !important; }
+  .s-blob .sticker, .f-glitter .foil { animation: none; }
+}

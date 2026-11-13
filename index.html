@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sticky Commits</title>
+  <meta name="description" content="The Informatics sticker wall — every sticker is a pull request.">
+  <meta property="og:title" content="Sticky Commits — the Informatics sticker wall">
+  <meta property="og:description" content="Design a 3D sticker, open a pull request, and slap it on the wall.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='88'>💖</text></svg>">
+  <script>
+    try { const t = localStorage.getItem('sw:theme'); if (t) document.documentElement.dataset.theme = JSON.parse(t); } catch {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@500;700;800;900&family=Space+Mono:wght@400;700&family=Great+Vibes&display=swap">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="config.js"></script>
+  <script type="module" src="assets/js/home.js"></script>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <!-- stays at the top while you scroll -->
+  <div class="topbar" id="topbar">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✦</span><span data-site-title>Sticky Commits</span></a>
+      <div class="nav-links">
+        <a class="nav-wall" href="wall.html" title="Explore every sticker on the wall">
+          <span class="mini-stack" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>The wall</span>
+          <span class="nav-wall-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="hide-sm" href="#contest">🏆 Prize</a>
+        <a class="hide-sm" href="#join">How to join</a>
+        <a class="hide-sm" data-repo-link href="#" target="_blank" rel="noopener">GitHub ↗</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch light / dark mode">🌙</button>
+      </div>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <div class="floaties" id="floaties" aria-hidden="true">
+      <div class="floaty" style="left:6%;top:18%;--d:1.2"><div class="sphere" style="--c:var(--pink);--cd:var(--pink-d);--s:84px;--t:8s"></div></div>
+      <div class="floaty hide-sm hide-md" style="left:3%;top:40%;--d:.6"><div class="donut" style="--c:var(--butter);--cd:var(--butter-d);--s:96px;--t:11s"></div></div>
+      <div class="floaty" style="right:7%;top:20%;--d:1"><div class="star3d" style="--c:var(--mint);--cd:var(--mint-d);--s:86px;--t:9s;--a0:-14deg;--a1:16deg"></div></div>
+      <div class="floaty hide-sm" style="right:14%;top:64%;--d:1.4"><div class="pill" style="--c:var(--sky);--cd:var(--sky-d);--s:120px;--t:10s;--a0:-30deg;--a1:-14deg"></div></div>
+      <div class="floaty hide-sm" style="left:24%;top:14%;--d:.5"><span class="emoji-sticker" style="--s:44px;--t:7s">⭐</span></div>
+      <div class="floaty hide-sm" style="right:4%;top:46%;--d:1.1"><span class="emoji-sticker" style="--s:46px;--t:9s">🍓</span></div>
+      <div class="floaty hide-sm" style="right:4%;bottom:70px;--d:.7"><span class="emoji-sticker" style="--s:42px;--t:12s">🚀</span></div>
+      <div class="floaty hide-sm" style="left:76%;bottom:92px;--d:.9"><div class="cube-wrap"><div class="cube"><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div>
+      <div class="floaty hide-sm" style="left:6%;bottom:52px;--d:.4">
+        <svg class="git-graph" viewBox="0 0 230 90" style="--t:12s" fill="none" stroke-width="5" stroke-linecap="round">
+          <path d="M8 60 H222" stroke="var(--lilac)"/>
+          <path d="M60 60 C 85 60, 85 22, 110 22 H150 C 175 22, 175 60, 200 60" stroke="var(--pink)"/>
+          <g stroke="#fff" stroke-width="4">
+            <circle cx="30" cy="60" r="9" fill="var(--lilac)"/><circle cx="60" cy="60" r="9" fill="var(--lilac)"/>
+            <circle cx="120" cy="22" r="9" fill="var(--pink)"/><circle cx="150" cy="22" r="9" fill="var(--pink)"/>
+            <circle cx="200" cy="60" r="11" fill="var(--butter)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="chip" id="class-chip">📌 <span data-class-name>Informatics students</span></span>
+        <a class="chip chip-gold" id="hero-contest" href="#contest" hidden>🏆 <span id="hero-contest-text">Win a prize</span></a>
+      </div>
+      <h1 class="puffy" id="title" data-site-title>Sticky Commits</h1>
+      <p class="lede" data-tagline>One sticker wall for every stage — every sticker is a pull request.</p>
+      <div class="cta">
+        <a class="btn" href="wall.html">🔭 Explore the wall</a>
+        <a class="btn btn-white" href="#join">🧩 Add your sticker</a>
+      </div>
+      <ul class="stats" aria-live="polite">
+        <li class="chip">🧩 <b id="stat-stickers">0</b> stickers</li>
+        <li class="chip">💖 <b id="stat-likes">0</b> likes</li>
+        <li class="chip">🌱 newest: <b id="stat-newest">—</b></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+  <!-- 🏆 The contest -->
+  <section class="section contest" id="contest" hidden aria-labelledby="contest-title">
+    <div class="contest-head">
+      <span class="chip chip-gold" id="contest-dates">🏆 The Sticker Contest</span>
+      <h2 class="section-title contest-title" id="contest-title">Win <span class="prize-word" id="prize-word">a prize</span></h2>
+      <p class="section-sub" id="prize-detail"></p>
+    </div>
+
+    <div class="contest-grid">
+      <div class="ticket-zone">
+        <span class="emoji-sticker t-deco t-gift" aria-hidden="true">🎁</span>
+        <div class="claude-spark" aria-hidden="true">
+          <div class="spark-persp"><div class="spark-spin" id="spark-spin"></div></div>
+          <div class="spark-glow"></div>
+        </div>
+        <span class="emoji-sticker t-deco t-cup" aria-hidden="true">🏆</span>
+        <span class="emoji-sticker t-deco t-heart" aria-hidden="true">💖</span>
+        <div class="ticket-scene" id="ticket">
+          <div class="ticket-float">
+            <div class="ticket" role="img" aria-labelledby="ticket-label">
+              <div class="ticket-main">
+                <div class="ticket-row"><span>★ Grand prize ★</span><span>№ 001</span></div>
+                <p class="ticket-big" id="ticket-big">1 month</p>
+                <p class="ticket-of" id="ticket-of">of <b>Claude</b></p>
+                <p class="ticket-small" id="ticket-label">subscription · for the most-loved sticker</p>
+                <p class="ticket-winner" id="ticket-winner" hidden></p>
+              </div>
+              <div class="ticket-stub" aria-hidden="true">
+                <span class="stub-text">Admit one winner</span>
+                <span class="stub-barcode"></span>
+              </div>
+              <div class="ticket-foil" aria-hidden="true"></div>
+              <div class="ticket-glare" aria-hidden="true"></div>
+              <div class="ticket-stamp" id="ticket-stamp" hidden aria-hidden="true">Winner</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contest-side">
+        <p class="cd-label" id="cd-label">Voting ends in</p>
+        <div class="countdown" id="countdown" role="timer" aria-live="off">
+          <div class="cd-tile" style="--c:#5b4bff"><div class="flip" data-cd="days"></div><span class="cd-unit">days</span></div>
+          <div class="cd-tile" style="--c:#8a4cff"><div class="flip" data-cd="hours"></div><span class="cd-unit">hours</span></div>
+          <div class="cd-tile" style="--c:#c64fd2"><div class="flip" data-cd="mins"></div><span class="cd-unit">mins</span></div>
+          <div class="cd-tile" style="--c:#ff5fa2"><div class="flip" data-cd="secs"></div><span class="cd-unit">secs</span></div>
+        </div>
+        <p class="cd-when" id="cd-when"></p>
+        <a class="leader" id="leader" href="wall.html" hidden></a>
+        <ul class="rules" id="rules"></ul>
+        <div class="contest-cta">
+          <a class="btn" href="wall.html" id="cta-vote">❤️ Vote on the wall</a>
+          <a class="btn btn-white" href="#join">🧩 Enter your sticker</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fame" id="fame" hidden aria-labelledby="fame-title">
+    <h2 class="section-title" id="fame-title">🏁 The race so far</h2>
+    <p class="section-sub" id="fame-sub">The top 3 right now — every like counts.</p>
+    <div class="podium" id="podium"></div>
+    <p class="fame-more"><a class="btn btn-white btn-sm" href="wall.html">🔭 See every sticker on the wall</a></p>
+  </section>
+  </main>
+
+  <section class="section join" id="join" aria-labelledby="join-title">
+    <h2 class="section-title" id="join-title">Put your sticker on the wall</h2>
+    <p class="section-sub">It's the real GitHub workflow — the same one open-source projects use every day.</p>
+    <ol class="steps">
+      <li class="step"><div class="step-icon" style="--c:var(--pink);--cd:var(--pink-d)">🍴</div><h3>Fork</h3><p>Hit <b>Fork</b> on the <a data-repo-link href="#" target="_blank" rel="noopener">repo</a> to get your own copy.</p></li>
+      <li class="step"><div class="step-icon" style="--c:var(--butter);--cd:var(--butter-d)">📁</div><h3>Make a folder</h3><p>On a new branch, copy <code>cards/_template</code> to <code>cards/&lt;your-username&gt;/</code>.</p></li>
+      <li class="step"><div class="step-icon" style="--c:var(--mint);--cd:var(--mint-d)">🎨</div><h3>Make it yours</h3><p>Edit <code>card.json</code> — shape, finish, colours, font, picture — and preview it with <code>npm run dev</code>.</p></li>
+      <li class="step"><div class="step-icon" style="--c:var(--sky);--cd:var(--sky-d)">🚀</div><h3>Pull request</h3><p>Open a PR. A bot checks your sticker — once it's merged, it slaps onto the wall and enters the contest! 🏆</p></li>
+    </ol>
+    <p class="section-sub steps-more">Every option you can use is listed in <a data-repo-file="CONTRIBUTING.md" href="#" target="_blank" rel="noopener">CONTRIBUTING.md</a> ✨</p>
+
+    <div class="terminal" aria-label="Command line version">
+      <div class="term-bar"><i style="--c:#ff6b6b"></i><i style="--c:#ffd166"></i><i style="--c:#4fd1a8"></i><span>~/sticker-wall — zsh</span></div>
+<pre id="terminal-body"><span class="c"># the command-line way 🧑‍💻</span>
+<span class="p">$</span> git clone https://github.com/<span class="s">YOU</span>/<span data-repo-name>REPO</span>.git
+<span class="p">$</span> cd <span data-repo-name>REPO</span> && git switch -c add-my-sticker
+<span class="p">$</span> cp -r cards/_template cards/<span class="s">YOU</span>   <span class="c"># your GitHub username, lowercase</span>
+<span class="p">$</span> code cards/<span class="s">YOU</span>/card.json          <span class="c"># make it yours ✨</span>
+<span class="p">$</span> npm run dev                          <span class="c"># preview at localhost:5173</span>
+<span class="p">$</span> git add cards/<span class="s">YOU</span>
+<span class="p">$</span> git commit -m "Add my sticker ✨"
+<span class="p">$</span> git push -u origin add-my-sticker   <span class="c"># then open a Pull Request 🎉</span></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Made with 💖 and pull requests by <b data-class-name>Informatics students</b>.</p>
+    <p>Likes are anonymous — the wall only ever stores a count, never who clicked.<br>
+       Comments appear after a moderator approves them.</p>
+    <p class="mode-pill" id="mode-pill" hidden></p>
+    <p class="egg">psst… try typing a certain git command anywhere on this page 🤫</p>
+    <p class="credit" id="credit">Developed by
+      <span class="dev"><span class="dev-name">Ahmed Maaruf</span><svg class="dev-swash" viewBox="0 0 240 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M6 15 C 46 5, 92 23, 134 13 S 206 5, 234 11"/></svg></span>, with care.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

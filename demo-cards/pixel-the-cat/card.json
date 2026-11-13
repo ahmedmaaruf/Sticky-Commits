@@ -1,0 +1,14 @@
+{
+  "name": "Pixel the Cat",
+  "title": "Professional keyboard napper",
+  "image": "cat.svg",
+  "emoji": "🐾",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "dots",
+  "font": "Fredoka",
+  "colors": { "background": "#ffd6ec", "text": "#4a1f45", "accent": "#ff5fa2" },
+  "attach": "tape",
+  "about": "I walk across keyboards and somehow fix the build. Nobody knows how. Not even me.",
+  "facts": ["🐟 Fish-driven development", "⌨️ 9,000 accidental commits", "😴 Naps in O(1)"]
+}

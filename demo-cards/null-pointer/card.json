@@ -1,0 +1,15 @@
+{
+  "name": "Null Pointer",
+  "title": "here, but also not here",
+  "image": "none",
+  "emoji": "👾",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "grid",
+  "font": "Press Start 2P",
+  "colors": { "background": "#1e1b3d", "text": "#9dffd8", "accent": "#ff6fae" },
+  "attach": "pin",
+  "tilt": 4,
+  "about": "Undefined is not a function, but I am a lifestyle. Retro games, low-level code, high-level snacks.",
+  "facts": ["🕹️ Speedruns tutorials", "🧠 Thinks in hexadecimal", "0x1F47E favorite number"]
+}

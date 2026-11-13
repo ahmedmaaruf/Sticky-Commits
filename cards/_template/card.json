@@ -1,0 +1,18 @@
+{
+  "$schema": "../../card.schema.json",
+  "name": "Your Name",
+  "title": "a short tagline ✨",
+  "emoji": "🌸",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "dots",
+  "font": "Fredoka",
+  "colors": {
+    "background": "#ffd6ec",
+    "text": "#3b1f4a",
+    "accent": "#ff5fa2"
+  },
+  "attach": "tape",
+  "about": "Say hi! What do you love building? What are you learning right now?",
+  "facts": ["☕ fun fact one", "🎧 fun fact two", "🐛 fun fact three"]
+}

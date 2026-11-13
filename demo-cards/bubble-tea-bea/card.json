@@ -1,0 +1,14 @@
+{
+  "name": "Bubble Tea Bea",
+  "title": "extra pearls, zero bugs",
+  "image": "boba.svg",
+  "emoji": "🧋",
+  "shape": "blob",
+  "finish": "holo",
+  "pattern": "hearts",
+  "font": "Bagel Fat One",
+  "colors": { "background": "#ffd2e8", "text": "#4a1f45", "accent": "#ff6fae" },
+  "attach": "tape",
+  "about": "Front-end wizard. If it does not wiggle, bounce or sparkle, is it even CSS?",
+  "facts": ["🧋 50% sugar, 100% CSS", "🎨 Has 47 shades of pink", "✨ border-radius: 50% fan"]
+}

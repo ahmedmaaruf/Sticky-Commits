@@ -1,0 +1,22 @@
+{
+  "name": "Lofi Luna",
+  "title": "beats to code & relax to",
+  "image": "moon.svg",
+  "emoji": "🎧",
+  "shape": "ticket",
+  "finish": "glitter",
+  "pattern": "dots",
+  "font": "Pacifico",
+  "colors": {
+    "background": "#3f2a86",
+    "text": "#fff4c9",
+    "accent": "#ffd166"
+  },
+  "attach": "none",
+  "about": "Night owl. Writes the cleanest code at 2am with a rainy playlist and a warm drink.",
+  "facts": [
+    "🌙 Dark mode only",
+    "☕ Chamomile > coffee",
+    "🎶 Has a playlist for every bug"
+  ]
+}
