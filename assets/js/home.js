@@ -87,9 +87,6 @@ function countUp(el, to) {
 function updateStats() {
   const real = cards.filter((c) => !c.demo);
   countUp($('#stat-stickers'), real.length || cards.length);
-  countUp($('#stat-likes'), cards.reduce((sum, c) => sum + tally.count(c), 0));
-  const newest = [...real].sort((a, b) => (b.added || '').localeCompare(a.added || ''))[0];
-  $('#stat-newest').textContent = newest ? newest.name : (cards.length ? 'demo crew' : 'you?');
 }
 
 // ── 🏆 contest ─────────────────────────────────────────────────
@@ -117,7 +114,6 @@ function setupContest() {
 
   const rules = [
     ['❤️', 'Most likes wins.', 'One like per person on each sticker.'],
-    ['🗓️', 'Likes count', `from ${fmtDate(info.start)} until ${fmtDate(info.end)}.`],
     ['🤝', 'A tie?', 'The sticker that reached its total first wins.'],
     ['🧩', 'Everyone can enter —', 'add your sticker with a pull request.'],
   ];
