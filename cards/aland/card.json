@@ -1,0 +1,29 @@
+
+{
+  "$schema": "../../card.schema.json",
+  "name": "Aland",
+  "title": "Culer for Life 🔵🔴",
+  "image": "barcelona2.gif",
+  "imageFit": "contain",
+  "imagePosition": "center",
+  "emoji": "⚽",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "stripes",
+  "font": "Fredoka",
+  "colors": {
+    "background": "linear-gradient(145deg, #004D98, #A50044)",
+    "text": "#FFFFFF",
+    "accent": "#EDBB00",
+    "name": "#FFFFFF"
+  },
+  "attach": "tape",
+  "tilt": -3,
+  "about": "I'm a software engineering student who loves coding, web development, and FC Barcelona. I enjoy building creative projects, learning new technologies, and supporting Barça. Visca el Barça!",
+  "facts": [
+    "⚽ Culer for life — Visca Barça!",
+    "💻 Passionate about coding",
+    "🏆 Més que un club"
+  ],
+  "css": "style.css"
+}
