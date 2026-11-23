@@ -1,0 +1,27 @@
+/* The GIF is a finished card design (frame, title, name and all),
+   so let it fill the whole front of the sticker instead of a small photo window. */
+
+.front .sticker {
+  padding: 0;
+  background: #0d0d10;
+}
+
+.front .surface {
+  padding: 0;
+  border-radius: inherit;
+  background: #0d0d10;
+}
+
+.front .photo {
+  height: 100%;
+  border-radius: inherit;
+  box-shadow: none;
+  background: #0d0d10;
+}
+
+/* The art already has the name and title on it. */
+.front .name,
+.front .title,
+.front .emoji-bubble {
+  display: none;
+}

@@ -29,6 +29,8 @@ const SOURCES = [
   { dir: 'demo-cards', demo: true },
 ];
 const SITE_FILES = ['index.html', 'wall.html', 'moderate.html', 'config.js', 'assets', 'cards', 'demo-cards'];
+// Sticker folders allowed an image over LIMITS.imageBytes (approved by the wall's admin).
+const BIG_IMAGE_OK = new Set(['aryasawat11-sys']);
 
 // ── tiny helpers ───────────────────────────────────────────────
 const isUrl = (s) => /^https:\/\//i.test(s);
@@ -283,7 +285,7 @@ function readCard(sourceDir, folder, demo) {
           : `Image "${raw.image}" not found in ${rel}/. Did you forget to commit it?`);
       } else {
         const size = fs.statSync(imgAbs).size;
-        if (size > LIMITS.imageBytes) err(`"${raw.image}" is ${kb(size)} — please shrink it under ${kb(LIMITS.imageBytes)} (try squoosh.app).`);
+        if (size > LIMITS.imageBytes && !BIG_IMAGE_OK.has(card.id)) err(`"${raw.image}" is ${kb(size)} — please shrink it under ${kb(LIMITS.imageBytes)} (try squoosh.app).`);
         else if (size > LIMITS.imageWarnBytes) warn(`"${raw.image}" is ${kb(size)} — it'll load faster under ${kb(LIMITS.imageWarnBytes)}.`);
         card.image = `${rel}/${raw.image.split('/').map(encodeURIComponent).join('/')}`;
       }

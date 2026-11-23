@@ -1,0 +1,12 @@
+{
+  "$schema": "../../card.schema.json",
+  "name": "G9",
+  "image": "01_midnight_gold.gif",
+  "pattern": "none",
+  "colors": {
+    "background": "#0d0d10",
+    "text": "#f3e6c8",
+    "accent": "#e2b866"
+  },
+  "css": "style.css"
+}
