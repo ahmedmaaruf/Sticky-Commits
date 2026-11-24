@@ -1,0 +1,177 @@
+
+/* ALAND - FC BARCELONA */
+
+/* FRONT CARD */
+
+.front .sticker {
+  background: #EDBB00;
+  border-radius: 1.4em;
+}
+
+.front .photo {
+  overflow: hidden;
+  border-radius: .7em;
+  box-shadow: 0 0 0 .15em #EDBB00;
+}
+
+.front .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* BACK CARD */
+
+.back .sticker {
+  background: #EDBB00;
+  padding: .45em;
+  border-radius: 1.3em;
+}
+
+.back .surface {
+  padding: .45em;
+  background: linear-gradient(
+    150deg,
+    #004D98,
+    #A50044
+  );
+}
+
+/* MAIN BACKGROUND */
+
+.back .card-back {
+  background: linear-gradient(
+    160deg,
+    #F7FAFF,
+    #E5EEFF
+  );
+
+  color: #142C55;
+  border-radius: .8em;
+
+  padding: .7em;
+  gap: .45em;
+
+  overflow: hidden;
+}
+
+/* PROFILE */
+
+.back .who {
+  gap: .55em;
+  margin-bottom: .15em;
+}
+
+.back .avatar {
+  width: 2.8em;
+  height: 2.8em;
+}
+
+.back .back-name {
+  color: #004D98;
+  font-size: 1.2em;
+  font-weight: 900;
+}
+
+.back .handle {
+  color: #A50044;
+  font-weight: 800;
+}
+
+/* CHAMPIONS LEAGUE MESSAGE */
+
+.back .about {
+  display: block;
+
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+
+  width: 100%;
+  margin: 0;
+  padding: .7em .8em;
+
+  background: linear-gradient(
+    135deg,
+    #004D98,
+    #173B7B
+  );
+
+  border-left: .3em solid #EDBB00;
+  border-radius: .45em;
+
+  color: #FFFFFF;
+  font-family: "Fredoka", sans-serif;
+  font-size: .73em;
+  font-weight: 700;
+  line-height: 1.4;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* FACTS SECTION */
+
+.back .facts {
+  display: flex;
+  flex-direction: column;
+  gap: .4em;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* INDIVIDUAL CONTAINERS */
+
+.back .facts li {
+  display: block;
+  width: 100%;
+
+  margin: 0;
+  padding: .6em .7em;
+
+  border-radius: .45em;
+  border: .09em solid #EDBB00;
+
+  background: #A50044;
+  color: #FFFFFF;
+
+  font-family: "Fredoka", sans-serif;
+  font-size: .72em;
+  font-weight: 800;
+  line-height: 1.35;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-overflow: clip;
+  overflow: visible;
+
+  rotate: 0deg !important;
+}
+
+/* ALTERNATING BARCELONA COLORS */
+
+.back .facts li:nth-child(2) {
+  background: #004D98;
+}
+
+.back .facts li:nth-child(3) {
+  background: #A50044;
+}
+
+/* FOOTER */
+
+.back .back-foot {
+  margin-top: auto;
+  color: #344568;
+  font-size: .58em;
+}
+
+.back .share {
+  background: #EDBB00;
+  color: #142C55;
+  border-radius: .5em;
+  font-weight: 900;
+}

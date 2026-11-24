@@ -1,0 +1,29 @@
+
+{
+  "$schema": "../../card.schema.json",
+  "name": "Aland",
+  "title": "Culer for Life 🔵🔴",
+  "image": "barcelona4.gif",
+  "imageFit": "cover",
+  "imagePosition": "center",
+  "emoji": "🏆",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "stripes",
+  "font": "Fredoka",
+  "colors": {
+    "background": "linear-gradient(145deg, #004D98, #A50044)",
+    "text": "#FFFFFF",
+    "accent": "#EDBB00",
+    "name": "#FFFFFF"
+  },
+  "attach": "tape",
+  "tilt": -3,
+  "about": "11 YEARS OF WAITING. 11 YEARS OF DREAMING. 2026 IS OUR YEAR! THE SIXTH CHAMPIONS LEAGUE IS COMING HOME. VISCA BARÇA!",
+  "facts": [
+    "🏆 THE SIXTH UCL IS CALLING!",
+    "🔵🔴 BLAUGRANA FOREVER!",
+    "❤️ MÉS QUE UN CLUB!"
+  ],
+  "css": "style.css"
+}
