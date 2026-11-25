@@ -1,0 +1,265 @@
+:host {
+    --red: #b00000;
+    --crimson: #650000;
+    --blood: #ff0000;
+    --charcoal: #080808;
+    --white: #e0e0e0;
+    --silver: #888888;
+    --edge: #800000;
+    --shadow-rgb: 0 0 0;
+    --font: Impact, Georgia, serif;
+}
+
+/* Original card wrapper */
+.wrap {
+    position: relative;
+    overflow: visible !important;
+    filter: drop-shadow(0 0 .6em #500000);
+}
+
+/* Black steel and blood-red frame */
+.sticker {
+    position: relative;
+    border-radius: .82em !important;
+    padding: .18em !important;
+    background: linear-gradient(135deg,
+            #333333,
+            #080808,
+            #800000,
+            #000000,
+            #500000,
+            #222222) !important;
+    box-shadow:
+        inset 0 0 0 1px #555555,
+        inset 0 0 0 3px #250000,
+        0 0 .8em #650000 !important;
+    clip-path: none !important;
+    overflow: visible !important;
+}
+
+/* Remove default pink frame */
+.surface {
+    position: relative;
+    border-radius: .68em !important;
+    padding: .7em !important;
+    background: #050505 !important;
+    box-shadow:
+        inset 0 0 0 1px #800000,
+        inset 0 0 0 4px #111111,
+        inset 0 0 1em #400000 !important;
+}
+
+/* Remove pink holographic effects */
+.foil {
+    display: none !important;
+}
+
+/* Skull above the actual frame */
+.front .wrap::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -2em;
+    transform: translateX(-50%);
+    width: 4em;
+    height: 4.5em;
+    background: url("skull.png") center / contain no-repeat;
+    filter: drop-shadow(0 0 .4em #900000);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.back .wrap::before {
+    content: none !important;
+}
+
+/* GIF container - reference card dimensions */
+.photo {
+    position: relative;
+    height: 13.1em !important;
+    margin-top: .38em !important;
+    border-radius: .36em !important;
+    overflow: hidden !important;
+    background: #000000 !important;
+    border: 1.5px solid #800000 !important;
+    box-shadow:
+        0 0 0 2px #111111,
+        0 0 0 3px #500000,
+        0 0 .8em #650000 !important;
+}
+
+/* Original GIF */
+.photo img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    background: #000000 !important;
+    filter: none !important;
+}
+
+/* Remove unnecessary image overlays */
+.photo::before {
+    content: none !important;
+}
+
+/* Animated red scanning laser */
+.front .photo::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ff0000;
+    box-shadow:
+        0 0 5px #ff0000,
+        0 0 12px #ff0000,
+        0 0 20px #b00000;
+    animation: kabusScan 3s linear infinite;
+    pointer-events: none;
+    z-index: 8;
+}
+
+/* Remove default decorative effects */
+.sticker::before,
+.sticker::after {
+    content: none !important;
+}
+
+/* Remove pink tape and folded corner */
+.tape,
+.peel {
+    display: none !important;
+}
+
+/* KABUS name */
+.name {
+    margin: .28em 0 0 !important;
+    font-family: var(--font) !important;
+    font-size: 1.18em !important;
+    font-weight: 900 !important;
+    letter-spacing: .15em !important;
+    text-transform: uppercase !important;
+    color: #bcbcbc !important;
+    text-shadow:
+        0 2px 2px #000000,
+        0 0 .5em #800000 !important;
+}
+
+/* Subtitle */
+.title {
+    margin: .24em 0 .68em !important;
+    font-family: Consolas, monospace !important;
+    font-size: .49em !important;
+    font-weight: 700 !important;
+    letter-spacing: .16em !important;
+    color: #cc0000 !important;
+    text-transform: uppercase !important;
+}
+
+/* Emoji circle */
+.emoji-bubble {
+    background: #080808 !important;
+    border: 1.5px solid #800000 !important;
+    box-shadow: 0 0 .7em #800000 !important;
+}
+
+/* Hover effect */
+:host([data-hover]) .wrap {
+    filter: drop-shadow(0 0 1em #a00000);
+}
+
+:host([data-hover]) .sticker {
+    box-shadow:
+        inset 0 0 0 1px #800000,
+        0 0 1.2em #990000 !important;
+}
+
+/* Keep original flip functionality */
+.flipper {
+    transition: transform .8s ease !important;
+    transform-style: preserve-3d;
+}
+
+.front,
+.back {
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+}
+
+/* Back of the card */
+.back .surface {
+    padding: .3em !important;
+}
+
+.card-back {
+    background: linear-gradient(145deg,
+            #000000,
+            #150000,
+            #000000) !important;
+    color: #dddddd !important;
+    border: 1px solid #650000 !important;
+    border-radius: .48em !important;
+    box-shadow: inset 0 0 1.5em #300000 !important;
+}
+
+.avatar {
+    background: #000000 !important;
+    border: 1px solid #800000 !important;
+    box-shadow: 0 0 .5em #800000 !important;
+}
+
+.back-name {
+    color: #cccccc !important;
+    font-family: var(--font) !important;
+}
+
+.handle {
+    color: #b00000 !important;
+}
+
+.about {
+    background: #080808 !important;
+    color: #dddddd !important;
+    border-left: 2px solid #a00000 !important;
+}
+
+.facts li {
+    background: #100000 !important;
+    color: #cccccc !important;
+    border: 1px solid #500000 !important;
+    border-left: 2px solid #b00000 !important;
+    border-radius: .2em !important;
+}
+
+.back-foot {
+    color: #990000 !important;
+}
+
+.share {
+    background: #650000 !important;
+    color: #ffffff !important;
+    border: 1px solid #900000 !important;
+}
+
+/* Laser movement */
+@keyframes kabusScan {
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
