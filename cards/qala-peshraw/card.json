@@ -1,0 +1,16 @@
+﻿{
+  "name": "Qala Peshraw",
+  "title": "Have a little faith — Just one more commit 🧠",
+  "image": "photo.jpg",
+  "imagePosition": "50% 20%",
+  "emoji": "🗝️",
+  "shape": "classic",
+  "finish": "glossy",
+  "pattern": "grid",
+  "font": "Permanent Marker",
+  "colors": { "background": "linear-gradient(160deg, #0f2027, #203a43, #2c5364)", "text": "#ffffff", "accent": "#38bdf8" },
+  "attach": "tape",
+  "tilt": -2,
+  "about": "Informatics student who plans every line of code like a prison break. Always two steps ahead of the bugs.",
+  "facts": ["🧠 Always has a backup plan", "🗺️ Code is my blueprint", "💻 Escaping bugs one commit at a time"]
+}
