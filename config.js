@@ -23,7 +23,7 @@ window.STICKER_WALL = {
 
   // Stickers to keep off the wall for now (their folder names, e.g. 'some-username').
   // The files stay in the repo and their likes are kept; remove a name to bring it back.
-  hiddenStickers: ['imnotameer'],
+  hiddenStickers: ['thephenomenalone1'],
 
   // Stickers added within this many days get a "NEW!" starburst.
   newBadgeDays: 4,
