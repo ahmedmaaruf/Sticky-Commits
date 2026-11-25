@@ -1,0 +1,65 @@
+/* ─ The Stag King ─ black · bone · dark gold ─────────────
+   Antlers are git branches, tips are commit nodes, the face is a
+   circuit board. art.svg is animated on its own; eyes.svg follows
+   the pointer. Titles: change "name" and "title" in card.json.   */
+:host{--shadow-rgb:0 0 0;--g:#d4a017;--bone:#f1e8d6;--font:'Jacquard 24','Pirata One',Georgia,serif}
+
+/* the antler crown breaks out of the top of the card */
+.sticker,.surface,.photo{overflow:visible!important}
+/* frame: brushed-metal die-cut edge */
+.sticker,.back .sticker{
+  padding:.3em!important;border-radius:1.15em!important;
+  background:linear-gradient(135deg,#fff4d6,#b8975a 22%,#4a3510 46%,#d8bb7e 72%,#fff4d6)!important}
+.surface{padding:0!important;border-radius:.85em!important;background:#090704!important;
+  box-shadow:inset 0 0 0 .07em rgb(212 160 23/.5)}
+.emoji-bubble{display:none}
+.peel{display:none!important}
+.front.s-classic .sticker,:host([data-hover]) .front.s-classic .sticker{clip-path:none}
+
+/* artwork fills the whole card */
+.photo{position:absolute!important;inset:0;height:auto!important;border-radius:0!important;
+  background:none!important;box-shadow:none!important}
+.photo img{position:absolute;left:0;top:-4.8em;width:100%;height:calc(100% + 4.8em);object-fit:fill}
+/* glowing eyes that follow the pointer, and blink now and then */
+.photo::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("eyes.svg") 0 0/100% 100% no-repeat;
+  translate:calc((var(--mx) - 50%) * .035) calc((var(--my) - 50%) * .02);
+  transition:translate .14s ease-out;animation:blink 6s ease-in-out infinite;transform-origin:50% 50%}
+@keyframes blink{0%,90%,100%{transform:scaleY(1);opacity:1}93%{transform:scaleY(.06);opacity:.8}96%{transform:scaleY(1);opacity:1}}
+
+/* name + title */
+.name{position:absolute!important;left:0;right:0;bottom:1.2em;margin:0!important;z-index:2;
+  font-size:2.1em!important;font-weight:400;line-height:1;letter-spacing:.05em;color:#fff6de;
+  text-shadow:0 0 .3em rgb(212 160 23/.7),0 .05em 0 #000,0 0 .9em rgb(0 0 0/.9)}
+.title{position:absolute;left:.8em;right:.8em;bottom:.8em;margin:0;z-index:2;opacity:1;
+  font:700 .62em/1.35 'Space Mono',ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--g);text-shadow:0 0 .7em rgb(212 160 23/.65),0 .1em .3em #000}
+.title::before{content:"";display:block;height:.16em;width:62%;margin:0 auto .8em;
+  background:linear-gradient(90deg,transparent,var(--g),transparent);opacity:.8}
+
+/* gold foil sweep instead of rainbow */
+.foil{background:linear-gradient(115deg,transparent 20%,rgb(212 160 23/.28) 45%,rgb(255 255 255/.18) 50%,transparent 65%) var(--mx) 50%/260% 100%!important;
+  mix-blend-mode:screen!important;opacity:.55!important}
+.f-holo .glare{mix-blend-mode:soft-light}
+
+/* ─ back side ─ the stag breaks out of the profile circle ─ */
+.back .surface{background:radial-gradient(circle at 50% 18%,#33240c,#090704 70%)!important}
+.card-back{overflow:visible!important;padding-top:2.4em!important;background:rgb(9 7 4/.93);color:#f0e4c8;
+  box-shadow:inset 0 0 0 .08em rgb(212 160 23/.45),0 .3em .8em rgb(0 0 0/.4)}
+.who{gap:1em}
+.avatar{position:relative;width:4.6em;height:4.6em;overflow:visible!important;
+  background:radial-gradient(circle at 50% 40%,#5c4010,#090704 74%);
+  box-shadow:0 0 0 .16em #090704,0 0 0 .3em var(--g),0 0 1em rgb(212 160 23/.5)}
+.avatar img{visibility:hidden}
+.avatar::after{content:"";position:absolute;left:50%;bottom:-.35em;width:6.9em;aspect-ratio:600/770;transform:translateX(-50%);
+  background:url("avatar.svg") center/100% 100% no-repeat;pointer-events:none;
+  filter:drop-shadow(0 .12em .2em rgb(0 0 0/.65))}
+.back-name{font-weight:400;font-size:1.6em;letter-spacing:.04em;color:#fff6de}
+.handle{color:var(--g)}
+.about{font-family:'Space Mono',ui-monospace,monospace;font-size:.66em;font-weight:400;line-height:1.55}
+.facts li{background:rgb(212 160 23/.1);color:#f0e4c8;box-shadow:inset 0 0 0 .06em rgb(212 160 23/.4);
+  font-family:'Space Mono',ui-monospace,monospace;font-weight:400;font-size:.6em}
+.back-foot{color:#9a8560}
+.share{background:var(--g);color:#120c02;box-shadow:0 .2em 0 #7a560a}
+.flip-hint{color:var(--g)}
+@media (prefers-reduced-motion:reduce){.photo::after{animation:none}}

@@ -1,0 +1,23 @@
+{
+  "$schema": "../../card.schema.json",
+  "name": "AJ 007",
+  "title": "Dark As Night",
+  "image": "art.svg",
+  "imageFit": "cover",
+  "emoji": "👑",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "none",
+  "font": "Jacquard 24",
+  "colors": {
+    "background": "#090704",
+    "text": "#f1e8d6",
+    "accent": "#d4a017",
+    "name": "#fff6de"
+  },
+  "attach": "none",
+  "tilt": -2,
+  "css": "style.css",
+  "about": "Crowned in commits. I rule the repo, merge what matters, and never force-push on a Friday.",
+  "facts": ["Same People. Different Lies", "Compiles in the dark", "Everything is under control"]
+}
