@@ -355,10 +355,22 @@ export function collectCards() {
   return results;
 }
 
+/** Sticker ids listed under `hiddenStickers` in config.js: kept in the repo, left off the wall. */
+function hiddenIds() {
+  try {
+    return new Set((readSiteConfig().hiddenStickers || []).map((id) => String(id).trim().toLowerCase()));
+  } catch {
+    return new Set();
+  }
+}
+
 export function buildManifest() {
   const results = collectCards();
-  const cards = results.filter((r) => r.card && !r.errors.length).map((r) => r.card);
-  return { manifest: { generatedAt: new Date().toISOString(), count: cards.length, cards }, results };
+  const hide = hiddenIds();
+  const ok = results.filter((r) => r.card && !r.errors.length);
+  const cards = ok.filter((r) => !hide.has(r.card.id)).map((r) => r.card);
+  const hidden = ok.filter((r) => hide.has(r.card.id)).map((r) => r.card.id);
+  return { manifest: { generatedAt: new Date().toISOString(), count: cards.length, cards }, results, hidden };
 }
 
 // ── PR ownership check ─────────────────────────────────────────
@@ -491,7 +503,7 @@ function cli() {
     return;
   }
 
-  const { manifest, results } = buildManifest();
+  const { manifest, results, hidden } = buildManifest();
 
   if (flag('--check')) {
     const author = (opt('--author') || '').toLowerCase();
@@ -531,6 +543,7 @@ function cli() {
 
   const { text } = report(results);
   if (text) console.log(`${text}\n(Stickers with ✖ errors are skipped until fixed.)\n`);
+  if (hidden.length) console.log(`🙈 Hidden by config.js (hiddenStickers): ${hidden.join(', ')}\n`);
 
   const outDir = opt('--out');
   if (outDir) {

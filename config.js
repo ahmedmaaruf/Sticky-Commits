@@ -21,6 +21,10 @@ window.STICKER_WALL = {
   // Demo stickers: true, false, or 'auto' (shown only until 5 real stickers exist).
   showDemoCards: 'auto',
 
+  // Stickers to keep off the wall for now (their folder names, e.g. 'some-username').
+  // The files stay in the repo and their likes are kept; remove a name to bring it back.
+  hiddenStickers: ['imnotameer'],
+
   // Stickers added within this many days get a "NEW!" starburst.
   newBadgeDays: 4,
 
