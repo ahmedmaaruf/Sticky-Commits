@@ -1,0 +1,71 @@
+.sticker {
+  --edge: #d4af37;
+  --accent: #d4af37;
+  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.45));
+}
+
+.name {
+  background: linear-gradient(180deg, #fff1b8 0%, #d4af37 55%, #8a6a12 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.4));
+}
+
+.title {
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.photo {
+  position: relative;
+  border: 2px solid #d4af37;
+  box-shadow:
+    0 0 0 3px #0b1230,
+    0 0 20px rgba(212, 175, 55, 0.5),
+    inset 0 0 36px rgba(0, 0, 0, 0.55);
+}
+.photo img {
+  filter: contrast(1.08) saturate(1.1);
+}
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 241, 184, 0.3) 50%, transparent 62%);
+  background-size: 300% 100%;
+  animation: glint 5s ease-in-out infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.emoji-bubble {
+  animation: steam 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 120, 90, 0.7));
+}
+
+.about {
+  font-style: italic;
+  line-height: 1.45;
+}
+.facts li {
+  border-left: 3px solid #d4af37;
+  padding-left: 0.5em;
+}
+
+@keyframes glint {
+  0%, 60% { background-position: 150% 0; }
+  100%    { background-position: -150% 0; }
+}
+@keyframes steam {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-4px) rotate(3deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo::after, .emoji-bubble { animation: none; }
+}

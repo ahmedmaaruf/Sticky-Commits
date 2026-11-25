@@ -1,0 +1,28 @@
+{
+  "$schema": "../../card.schema.json",
+  "name": "Jane",
+  "title": "I know what you're thinking 🍵",
+  "image": "Jane.gif",
+  "imageFit": "cover",
+  "imagePosition": "top",
+  "emoji": "🍵",
+  "shape": "classic",
+  "finish": "holo",
+  "pattern": "rays",
+  "font": "Abril Fatface",
+  "colors": {
+    "background": "linear-gradient(160deg, #1c2a66 0%, #0b1230 60%, #05081a 100%)",
+    "text": "#f6e7b4",
+    "accent": "#d4af37",
+    "name": "#ffe08a"
+  },
+  "attach": "pin",
+  "tilt": -3,
+  "about": "Part detective, part magician, full-time tea addict. I read people, break bugs, and always keep one more trick up my sleeve.",
+  "facts": [
+    "🍵 Debugs best with a fresh cup of tea",
+    "🎩 Reads people faster than stack traces",
+    "😏 Smiling is my favorite way to commit"
+  ],
+  "css": "style.css"
+}
