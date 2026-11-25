@@ -1,0 +1,5 @@
+{
+  "$schema": "../../card.schema.json",
+  "name": "Anya",
+  "image": "card.gif"
+}
