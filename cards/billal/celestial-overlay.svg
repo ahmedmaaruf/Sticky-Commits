@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 520" width="360" height="520" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff0b3"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#8c6718"/>
+    </linearGradient>
+    <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f3d98b" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#fff0b3" stop-opacity="0.85"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Corner Moon & Star Filigree -->
+  <g filter="url(#glow)" fill="url(#goldGrad)">
+    <path d="M26 16 A11 11 0 1 0 38 28 A8.5 8.5 0 1 1 26 16 Z"/>
+    <polygon points="43,14 44.5,18 48.5,19.5 44.5,21 43,25 41.5,21 37.5,19.5 41.5,18"/>
+    <path d="M334 16 A11 11 0 1 1 322 28 A8.5 8.5 0 1 0 334 16 Z"/>
+    <polygon points="317,14 318.5,18 322.5,19.5 318.5,21 317,25 315.5,21 311.5,19.5 315.5,18"/>
+    <polygon points="24,492 26,498 32,500 26,502 24,508 22,502 16,500 22,498"/>
+    <polygon points="336,492 338,498 344,500 338,502 336,508 334,502 328,500 334,498"/>
+  </g>
+
+  <!-- Twinkling Stars Around Card Edges -->
+  <g fill="#fff0b3" filter="url(#glow)">
+    <polygon points="75,14 76.5,18 80.5,19.5 76.5,21 75,25 73.5,21 69.5,19.5 73.5,18">
+      <animate attributeName="opacity" values="0.2;1;0.2" dur="2.2s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="285,14 286.5,18 290.5,19.5 286.5,21 285,25 283.5,21 279.5,19.5 283.5,18">
+      <animate attributeName="opacity" values="1;0.2;1" dur="2.6s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="14,170 15.5,174 19.5,175.5 15.5,177 14,181 12.5,177 8.5,175.5 12.5,174">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="1.9s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="346,240 347.5,244 351.5,245.5 347.5,247 346,251 344.5,247 340.5,245.5 344.5,244">
+      <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+
+  <!-- Golden Airplane 1 + Contrail -->
+  <g filter="url(#glow)">
+    <line x1="-80" y1="36" x2="-10" y2="36" stroke="url(#trailGrad)" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M-10 36 L-22 31 L-19 36 L-22 41 Z" fill="#fff0b3"/>
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="470 0" dur="6.5s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- Golden Airplane 2 + Contrail -->
+  <g filter="url(#glow)">
+    <line x1="440" y1="365" x2="375" y2="365" stroke="url(#trailGrad)" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M375 365 L386 361 L383 365 L386 369 Z" fill="#f3d98b"/>
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="-470 0" dur="8s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- Diagonal Shooting Star -->
+  <g filter="url(#glow)">
+    <line x1="-40" y1="90" x2="10" y2="115" stroke="url(#trailGrad)" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="10" cy="115" r="2.2" fill="#fff7d6"/>
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="420 210" dur="4.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.75;1" dur="4.2s" repeatCount="indefinite"/>
+  </g>
+</svg>

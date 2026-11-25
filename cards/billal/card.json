@@ -1,0 +1,28 @@
+
+{
+  "$schema": "../../card.schema.json",
+  "name": "BILAL",
+  "title": "Peace Above All",
+  "image": "bilal-photo.png",
+  "imageFit": "contain",
+  "imagePosition": "center",
+  "emoji": "♛",
+  "shape": "classic",
+  "finish": "matte",
+  "pattern": "none",
+  "font": "Archivo Black",
+  "colors": {
+    "background": "#101010",
+    "text": "#F5E6C8",
+    "accent": "#C9A66B",
+    "name": "#E8C783"
+  },
+  "attach": "pin",
+  "css": "style.css",
+  "about": "I climbed the moon to find some peace. 🌙✨",
+  "facts": [
+    "🌙 Searching for peace",
+    "🪜 One step beyond",
+    "✨ Somewhere above the noise"
+  ]
+}
