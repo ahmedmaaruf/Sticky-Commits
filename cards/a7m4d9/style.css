@@ -24,13 +24,49 @@
 }
 
 .front.s-classic .sticker {
+  position: relative;
+  overflow: visible !important;
   animation: goldenPulse 3s ease-in-out infinite;
 }
 
+.front.s-classic .sticker::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+
+  top: -140px !important;
+right: -0px !important;
+left: auto !important;
+
+  width: 215px !important;
+  height: 155px !important;
+
+  background-image: url("kurdistan-flag.svg") !important;
+  background-position: center !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  transform-origin: 8% 88%;
+  z-index: 9999 !important;
+  pointer-events: none;
+
+  filter:
+    drop-shadow(4px 6px 5px #00000088);
+
+  animation: kurdishFlagWind 3.6s ease-in-out infinite !important;
+}
+
 .front.s-classic .surface {
+  position: relative;
   padding: 0.55em;
   border-radius: 0.9em;
   align-items: center;
+  overflow: visible !important;
   background:
     radial-gradient(
       circle at 50% 30%,
@@ -77,9 +113,9 @@
 }
 
 .front.s-classic .photo {
+  position: relative;
   width: 100%;
   height: 12.7em;
-  position: relative;
   overflow: hidden;
   border: 0.13em solid #D4AF37;
   border-radius: 0.7em;
@@ -90,6 +126,7 @@
 }
 
 .front.s-classic .photo img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -179,19 +216,19 @@
 }
 
 .front .pin {
-  z-index: 6;
-  width: 1.25em;
-  height: 1.25em;
   background: radial-gradient(
     circle at 30% 25%,
-    #88919A,
-    #414750 45%,
-    #111418 85%
+    #F5E6B0,
+    #BD913F 50%,
+    #4A321A
   );
-  border: 0.09em solid #D4AF37;
-  box-shadow:
-    0 0 0.3em #D4AF37,
-    0.2em 0.3em 0.3em #00000099;
+  border: 0.08em solid #D4AF37;
+  box-shadow: 0 0 0.4em #D4AF37;
+}
+
+.front .pin::before,
+.front .pin::after {
+  content: none !important;
 }
 
 .front .peel {
@@ -208,8 +245,7 @@
     radial-gradient(circle at 15% 80%, #FFD866 0 0.045em, transparent 0.08em),
     radial-gradient(circle at 70% 50%, #FFFFFF 0 0.035em, transparent 0.07em),
     radial-gradient(circle at 35% 35%, #FFD866 0 0.04em, transparent 0.08em),
-    radial-gradient(circle at 90% 75%, #FFD866 0 0.035em, transparent 0.07em),
-    radial-gradient(circle at 55% 15%, #FFFFFF 0 0.04em, transparent 0.08em);
+    radial-gradient(circle at 90% 75%, #FFD866 0 0.035em, transparent 0.07em);
   animation: floatingStars 4s linear infinite;
 }
 
@@ -237,9 +273,9 @@
   background:
     linear-gradient(
       180deg,
-      #00000055 0%,
+      #00000055,
       #00000088 45%,
-      #000000EE 100%
+      #000000EE
     ),
     url("citys.gif") center / cover no-repeat;
   box-shadow:
@@ -354,28 +390,78 @@
   animation: revealGold 1s ease-out;
 }
 
+@keyframes kurdishFlagWind {
+  0%, 100% {
+    transform:
+      perspective(650px)
+      rotateY(-10deg)
+      rotateZ(-2deg)
+      scaleX(0.97);
+  }
+
+  25% {
+    transform:
+      perspective(650px)
+      rotateY(5deg)
+      rotateZ(0deg)
+      scaleX(1);
+  }
+
+  50% {
+    transform:
+      perspective(650px)
+      rotateY(13deg)
+      rotateZ(2deg)
+      scaleX(0.96);
+  }
+
+  75% {
+    transform:
+      perspective(650px)
+      rotateY(-5deg)
+      rotateZ(0deg)
+      scaleX(0.99);
+  }
+}
+
 @keyframes goldenPulse {
   0%, 100% {
     filter: drop-shadow(0 0 0.15em #D4AF37);
   }
+
   50% {
     filter: drop-shadow(0 0 0.5em #D4AF37);
   }
 }
 
 @keyframes goldenText {
-  0%, 100% { opacity: 0.65; }
-  50% { opacity: 1; }
+  0%, 100% {
+    opacity: 0.65;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes sunShine {
-  0% { background-position: 200% 0; }
-  100% { background-position: -100% 0; }
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
 }
 
 @keyframes leaderFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-0.25em); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-0.25em);
+  }
 }
 
 @keyframes floatingStars {
@@ -383,8 +469,15 @@
     transform: translateY(1em);
     opacity: 0;
   }
-  30% { opacity: 0.9; }
-  70% { opacity: 0.7; }
+
+  30% {
+    opacity: 0.9;
+  }
+
+  70% {
+    opacity: 0.7;
+  }
+
   100% {
     transform: translateY(-3em);
     opacity: 0;
@@ -392,15 +485,21 @@
 }
 
 @keyframes backLight {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+  0%, 100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes revealGold {
-  0% {
+  from {
     filter: brightness(1.8);
   }
-  100% {
+
+  to {
     filter: brightness(1);
   }
 }
@@ -411,5 +510,68 @@
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+.front.s-classic .surface {
+  position: relative;
+}
+
+.front.s-classic .surface::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  height: 3.8em;
+
+  background:
+    radial-gradient(
+      ellipse 0.28em 1.3em at 15% 20%,
+      #B30818 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 0.38em 1.8em at 40% 20%,
+      #A60816 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 0.25em 1.1em at 68% 20%,
+      #D01825 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 0.34em 1.5em at 87% 20%,
+      #9F0714 98%,
+      transparent 100%
+    ),
+    linear-gradient(
+      #B30818 0 0
+    ) top / 100% 0.5em no-repeat;
+
+  border-radius: 0.8em 0.8em 0 0;
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 5;
+
+  animation: bloodDrip 3.5s ease-in-out infinite;
+}
+
+@keyframes bloodDrip {
+  0%, 100% {
+    transform: scaleY(0.8);
+    transform-origin: top;
+  }
+
+  50% {
+    transform: scaleY(1.15);
+    transform-origin: top;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .front.s-classic .surface::after {
+    animation: none;
   }
 }
